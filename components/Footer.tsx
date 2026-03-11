@@ -18,7 +18,16 @@ export default function Footer() {
           className="text-xs"
           style={{ color: "var(--muted)", fontFamily: "var(--font-mono)" }}
         >
-          Vibe coded with Claude &#10022; Built with Next.js &amp; Tailwind
+          Vibe coded with Claude &#10022; Built with Next.js &amp; Tailwind &#10022;{" "}
+          <a
+            href="https://github.com/kesiee/portfolio"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline transition-opacity hover:opacity-70"
+            style={{ color: "var(--muted)" }}
+          >
+            View Source
+          </a>
         </p>
       </div>
     </footer>
