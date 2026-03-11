@@ -51,8 +51,7 @@ export default function Contact() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
-  // Sign up at formspree.io → create a form → paste your form ID here
-  const FORMSPREE_ENDPOINT = "https://formspree.io/f/xwvrowag";
+  const FORMSPREE_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT ?? "";
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

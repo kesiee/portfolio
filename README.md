@@ -66,11 +66,13 @@ The form uses [Formspree](https://formspree.io) (free tier — 50 submissions/mo
 
 1. Sign up at formspree.io with your email
 2. Create a new form → copy the form ID
-3. In `components/Contact.tsx`, replace the endpoint:
+3. Add it to `.env.local`:
 
-```ts
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+```bash
+NEXT_PUBLIC_FORMSPREE_ENDPOINT=https://formspree.io/f/YOUR_FORM_ID
 ```
+
+On Vercel, add the same key under **Project Settings → Environment Variables**.
 
 ---
 
