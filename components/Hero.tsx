@@ -1,7 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { personal } from "@/lib/data";
+
+const surnames = ["Kammanahalli Chandra Sekhara", "K C", "Kesiee"];
 
 const containerVariants = {
   hidden: {},
@@ -12,6 +15,53 @@ const itemVariants = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
 };
+
+function RotatingName() {
+  const [index, setIndex] = useState(0);
+  const [displayed, setDisplayed] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = surnames[index];
+
+    if (!isDeleting && displayed === current) {
+      // Pause at full text, then start deleting
+      const timeout = setTimeout(() => setIsDeleting(true), 2000);
+      return () => clearTimeout(timeout);
+    }
+
+    if (isDeleting && displayed === "") {
+      // Move to next word
+      setIsDeleting(false);
+      setIndex((prev) => (prev + 1) % surnames.length);
+      return;
+    }
+
+    const speed = isDeleting ? 40 : 80;
+    const timeout = setTimeout(() => {
+      setDisplayed(
+        isDeleting
+          ? current.slice(0, displayed.length - 1)
+          : current.slice(0, displayed.length + 1),
+      );
+    }, speed);
+
+    return () => clearTimeout(timeout);
+  }, [displayed, isDeleting, index]);
+
+  return (
+    <span>
+      {displayed}
+      <motion.span
+        animate={{ opacity: [1, 0] }}
+        transition={{ duration: 0.6, repeat: Infinity, repeatType: "reverse" }}
+        style={{ color: "var(--amber)" }}
+      >
+        |
+      </motion.span>
+    </span>
+  );
+}
 
 export default function Hero() {
   return (
@@ -81,42 +131,22 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          {/* Full name — two display lines */}
-          <motion.h1
-            variants={itemVariants}
-            className="leading-none tracking-tight mb-2"
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(44px, 8vw, 80px)",
-              fontWeight: 800,
-              color: "var(--text)",
-            }}
-          >
-            Shashank Kammanahalli
-          </motion.h1>
+          {/* Name with typing rotation */}
           <motion.h1
             variants={itemVariants}
             className="leading-none tracking-tight mb-3"
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(44px, 8vw, 80px)",
+              fontSize: "clamp(40px, 7vw, 72px)",
               fontWeight: 800,
               color: "var(--text)",
-              opacity: 0.55,
             }}
           >
-            Chandra Sekhara
+            Shashank{" "}
+            <span style={{ opacity: 0.55 }}>
+              <RotatingName />
+            </span>
           </motion.h1>
-
-          {/* Nickname */}
-          <motion.p
-            variants={itemVariants}
-            className="text-sm mb-6"
-            style={{ color: "var(--muted)", fontFamily: "var(--font-mono)" }}
-          >
-            — goes by{" "}
-            <span style={{ color: "var(--amber)" }}>Kesiee</span>
-          </motion.p>
 
           {/* Subtitle */}
           <motion.p

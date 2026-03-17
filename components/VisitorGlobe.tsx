@@ -11,7 +11,7 @@ interface Props {
 export default function VisitorGlobe({ countries }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pointerInteracting = useRef<number | null>(null);
-  const pointerInteractionMovement = useRef(0);
+  const phiAtDragStart = useRef(0);
   const phi = useRef(0);
 
   const markers = useMemo(
@@ -30,8 +30,8 @@ export default function VisitorGlobe({ countries }: Props) {
   );
 
   const onPointerDown = useCallback((e: React.PointerEvent) => {
-    pointerInteracting.current =
-      e.clientX - pointerInteractionMovement.current;
+    pointerInteracting.current = e.clientX;
+    phiAtDragStart.current = phi.current;
     if (canvasRef.current) canvasRef.current.style.cursor = "grabbing";
   }, []);
 
@@ -47,8 +47,8 @@ export default function VisitorGlobe({ countries }: Props) {
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     if (pointerInteracting.current !== null) {
-      pointerInteractionMovement.current =
-        e.clientX - pointerInteracting.current;
+      const delta = e.clientX - pointerInteracting.current;
+      phi.current = phiAtDragStart.current + delta / 100;
     }
   }, []);
 
@@ -80,10 +80,9 @@ export default function VisitorGlobe({ countries }: Props) {
         glowColor: [0.08, 0.08, 0.08],
         markers,
         onRender: (state) => {
+          // Only auto-rotate when not dragging
           if (pointerInteracting.current === null) {
             phi.current += 0.003;
-          } else {
-            phi.current += pointerInteractionMovement.current / 200;
           }
           state.phi = phi.current;
           state.width = width * 2;
@@ -91,7 +90,6 @@ export default function VisitorGlobe({ countries }: Props) {
         },
       });
     } catch {
-      // WebGL not available — fail silently
       return;
     }
 
