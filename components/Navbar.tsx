@@ -107,6 +107,14 @@ export default function Navbar() {
               </button>
 
               <a
+                href="/analytics"
+                className="text-sm font-medium transition-colors duration-200 hover:text-amber-400"
+                style={{ color: "var(--muted)", fontFamily: "var(--font-body)" }}
+              >
+                Analytics
+              </a>
+
+              <a
                 href={personal.resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -193,6 +201,13 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
+          <a
+            href="/analytics"
+            className="text-base font-medium py-2 transition-colors duration-200 hover:text-amber-400"
+            style={{ color: "var(--text)", fontFamily: "var(--font-body)" }}
+          >
+            Analytics
+          </a>
           <a
             href={personal.resumeUrl}
             target="_blank"
