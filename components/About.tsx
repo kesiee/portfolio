@@ -4,13 +4,6 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { education } from "@/lib/data";
 
-const stats = [
-  { value: "2+", label: "Years Research" },
-  { value: "1.2M+", label: "Records Processed" },
-  { value: "2x", label: "IEEE Published" },
-  { value: "4.0", label: "GPA" },
-];
-
 export default function About() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -51,38 +44,6 @@ export default function About() {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <div className="grid grid-cols-2 gap-4 mb-10">
-              {stats.map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                  transition={{ duration: 0.4, delay: 0.2 + i * 0.1 }}
-                  className="p-5 rounded-xl border"
-                  style={{
-                    backgroundColor: "var(--card)",
-                    borderColor: "var(--border)",
-                  }}
-                >
-                  <div
-                    className="text-3xl font-extrabold mb-1"
-                    style={{
-                      color: "var(--amber)",
-                      fontFamily: "var(--font-display)",
-                    }}
-                  >
-                    {stat.value}
-                  </div>
-                  <div
-                    className="text-sm"
-                    style={{ color: "var(--muted)" }}
-                  >
-                    {stat.label}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
             {/* Education cards */}
             <div className="space-y-4">
               {education.map((edu, i) => (

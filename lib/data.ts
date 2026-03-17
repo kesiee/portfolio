@@ -113,6 +113,15 @@ export const projects = [
     link: "https://github.com/kesiee/ml_term_project_2024",
     metric: { label: "Type", value: "Classification" },
   },
+  {
+    title: "Job Application Automation",
+    subtitle: "Full-Stack Pipeline · Python",
+    description:
+      "Automated pipeline scraping 175+ company career pages and job board APIs, scoring postings against resumes using TF-IDF + sentence-transformer matching, with a Flask web dashboard for tracking and analytics.",
+    tags: ["Python", "Flask", "NLP", "Sentence Transformers", "SQLite", "Playwright"],
+    link: "https://github.com/kesiee/apply",
+    metric: { label: "Companies", value: "175+" },
+  },
 ];
 
 export const experience = [
