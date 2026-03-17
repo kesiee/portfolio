@@ -9,6 +9,15 @@ export async function middleware(request: NextRequest) {
   // Don't track the analytics page itself
   if (path === "/analytics") return response;
 
+  // Skip bots, crawlers, and Vercel internal requests
+  const ua = request.headers.get("user-agent") || "";
+  if (
+    /bot|crawler|spider|prerender|headless|vercel|ping|monitor|check/i.test(ua) ||
+    !ua
+  ) {
+    return response;
+  }
+
   // Vercel sets these headers at the edge
   const country = request.headers.get("x-vercel-ip-country") || "Unknown";
   const region = request.headers.get("x-vercel-ip-country-region") || "Unknown";
