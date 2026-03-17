@@ -1,8 +1,21 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import { computeGenderProbability, countryName } from "@/lib/analytics";
+
+const VisitorGlobe = dynamic(() => import("@/components/VisitorGlobe"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full aspect-square max-w-md mx-auto flex items-center justify-center">
+      <div
+        className="w-8 h-8 border-2 rounded-full animate-spin"
+        style={{ borderColor: "var(--border)", borderTopColor: "var(--amber)" }}
+      />
+    </div>
+  ),
+});
 
 /* ---------- types ---------- */
 interface OverviewData {
@@ -362,6 +375,26 @@ export default function AnalyticsDashboard() {
               />
             </div>
 
+            {/* Globe */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              className="p-5 rounded-xl border mb-10"
+              style={{
+                backgroundColor: "var(--card)",
+                borderColor: "var(--border)",
+              }}
+            >
+              <h3
+                className="text-sm font-semibold mb-4"
+                style={{ color: "var(--text)" }}
+              >
+                Visitor Globe
+              </h3>
+              <VisitorGlobe countries={data.countries} />
+            </motion.div>
+
             {/* Daily chart */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -490,6 +523,23 @@ export default function AnalyticsDashboard() {
             </motion.div>
           </>
         )}
+
+        {/* Cookie notice */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="mt-10 p-4 rounded-xl border text-center"
+          style={{
+            backgroundColor: "var(--card)",
+            borderColor: "var(--border)",
+          }}
+        >
+          <p className="text-xs" style={{ color: "var(--muted)" }}>
+            This site uses cookies to distinguish unique visitors from repeat
+            views. No personal information is collected or shared.
+          </p>
+        </motion.div>
 
         {!data && !error && (
           <div className="flex justify-center py-20">

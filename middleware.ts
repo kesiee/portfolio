@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
   // Vercel sets these headers at the edge
   const country = request.headers.get("x-vercel-ip-country") || "Unknown";
   const region = request.headers.get("x-vercel-ip-country-region") || "Unknown";
-  const city = request.headers.get("x-vercel-ip-city") || "Unknown";
+  const city = decodeURIComponent(request.headers.get("x-vercel-ip-city") || "Unknown");
   const today = new Date().toISOString().split("T")[0];
 
   const isNewVisitor = !request.cookies.has("_vid");
