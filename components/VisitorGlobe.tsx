@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useMemo, useCallback } from "react";
 import createGlobe from "cobe";
 import { getCoords } from "@/lib/geo";
 
@@ -14,16 +14,24 @@ export default function VisitorGlobe({ countries }: Props) {
   const pointerInteractionMovement = useRef(0);
   const phi = useRef(0);
 
-  const markers = Object.entries(countries)
-    .map(([code, count]) => {
-      const coords = getCoords(code);
-      if (!coords) return null;
-      return { location: coords as [number, number], size: Math.min(0.1 + count * 0.02, 0.35) };
-    })
-    .filter(Boolean) as { location: [number, number]; size: number }[];
+  const markers = useMemo(
+    () =>
+      Object.entries(countries)
+        .map(([code, count]) => {
+          const coords = getCoords(code);
+          if (!coords) return null;
+          return {
+            location: coords as [number, number],
+            size: Math.min(0.1 + count * 0.02, 0.35),
+          };
+        })
+        .filter(Boolean) as { location: [number, number]; size: number }[],
+    [countries],
+  );
 
   const onPointerDown = useCallback((e: React.PointerEvent) => {
-    pointerInteracting.current = e.clientX - pointerInteractionMovement.current;
+    pointerInteracting.current =
+      e.clientX - pointerInteractionMovement.current;
     if (canvasRef.current) canvasRef.current.style.cursor = "grabbing";
   }, []);
 
@@ -39,47 +47,53 @@ export default function VisitorGlobe({ countries }: Props) {
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     if (pointerInteracting.current !== null) {
-      const delta = e.clientX - pointerInteracting.current;
-      pointerInteractionMovement.current = delta;
+      pointerInteractionMovement.current =
+        e.clientX - pointerInteracting.current;
     }
   }, []);
 
   useEffect(() => {
-    let width = 0;
+    if (!canvasRef.current) return;
+    const canvas = canvasRef.current;
+
+    let width = canvas.offsetWidth;
 
     const onResize = () => {
-      if (canvasRef.current) {
-        width = canvasRef.current.offsetWidth;
-      }
+      width = canvas.offsetWidth;
     };
     window.addEventListener("resize", onResize);
-    onResize();
 
-    const globe = createGlobe(canvasRef.current!, {
-      devicePixelRatio: 2,
-      width: width * 2,
-      height: width * 2,
-      phi: 0,
-      theta: 0.25,
-      dark: 1,
-      diffuse: 1.2,
-      mapSamples: 16000,
-      mapBrightness: 6,
-      baseColor: [0.15, 0.15, 0.15],
-      markerColor: [0.96, 0.62, 0.04], // amber
-      glowColor: [0.08, 0.08, 0.08],
-      markers,
-      onRender: (state) => {
-        if (pointerInteracting.current === null) {
-          phi.current += 0.003;
-        } else {
-          phi.current += pointerInteractionMovement.current / 200;
-        }
-        state.phi = phi.current;
-        state.width = width * 2;
-        state.height = width * 2;
-      },
-    });
+    let globe: ReturnType<typeof createGlobe>;
+    try {
+      globe = createGlobe(canvas, {
+        devicePixelRatio: 2,
+        width: width * 2,
+        height: width * 2,
+        phi: 0,
+        theta: 0.25,
+        dark: 1,
+        diffuse: 1.2,
+        mapSamples: 16000,
+        mapBrightness: 6,
+        baseColor: [0.15, 0.15, 0.15],
+        markerColor: [0.96, 0.62, 0.04],
+        glowColor: [0.08, 0.08, 0.08],
+        markers,
+        onRender: (state) => {
+          if (pointerInteracting.current === null) {
+            phi.current += 0.003;
+          } else {
+            phi.current += pointerInteractionMovement.current / 200;
+          }
+          state.phi = phi.current;
+          state.width = width * 2;
+          state.height = width * 2;
+        },
+      });
+    } catch {
+      // WebGL not available — fail silently
+      return;
+    }
 
     return () => {
       globe.destroy();
