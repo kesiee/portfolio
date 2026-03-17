@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { personal } from "@/lib/data";
 
 const surnames = ["Kammanahalli Chandra Sekhara", "K C", "Kesiee"];
@@ -25,19 +25,17 @@ function RotatingName() {
     const current = surnames[index];
 
     if (!isDeleting && displayed === current) {
-      // Pause at full text, then start deleting
-      const timeout = setTimeout(() => setIsDeleting(true), 2000);
+      const timeout = setTimeout(() => setIsDeleting(true), 2400);
       return () => clearTimeout(timeout);
     }
 
     if (isDeleting && displayed === "") {
-      // Move to next word
       setIsDeleting(false);
       setIndex((prev) => (prev + 1) % surnames.length);
       return;
     }
 
-    const speed = isDeleting ? 40 : 80;
+    const speed = isDeleting ? 35 : 70;
     const timeout = setTimeout(() => {
       setDisplayed(
         isDeleting
@@ -50,16 +48,16 @@ function RotatingName() {
   }, [displayed, isDeleting, index]);
 
   return (
-    <span>
+    <>
       {displayed}
       <motion.span
         animate={{ opacity: [1, 0] }}
-        transition={{ duration: 0.6, repeat: Infinity, repeatType: "reverse" }}
+        transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
         style={{ color: "var(--amber)" }}
       >
         |
       </motion.span>
-    </span>
+    </>
   );
 }
 
@@ -108,12 +106,12 @@ export default function Hero() {
       />
 
       {/* Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 text-center">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="max-w-4xl"
+          className="flex flex-col items-center"
         >
           {/* Available badge */}
           <motion.div variants={itemVariants} className="mb-8">
@@ -131,27 +129,40 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          {/* Name with typing rotation */}
+          {/* Big centered first name */}
           <motion.h1
             variants={itemVariants}
-            className="leading-none tracking-tight mb-3"
+            className="leading-none tracking-tight"
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(40px, 7vw, 72px)",
+              fontSize: "clamp(56px, 10vw, 96px)",
               fontWeight: 800,
               color: "var(--text)",
             }}
           >
-            Shashank{" "}
-            <span style={{ opacity: 0.55 }}>
-              <RotatingName />
-            </span>
+            Shashank
           </motion.h1>
+
+          {/* Typing surname — fixed height so nothing shifts */}
+          <motion.div
+            variants={itemVariants}
+            className="mt-2 mb-6"
+            style={{
+              height: "clamp(36px, 5vw, 56px)",
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(24px, 4vw, 44px)",
+              fontWeight: 700,
+              color: "var(--text)",
+              opacity: 0.5,
+            }}
+          >
+            <RotatingName />
+          </motion.div>
 
           {/* Subtitle */}
           <motion.p
             variants={itemVariants}
-            className="text-xl sm:text-2xl font-semibold mb-6"
+            className="text-xl sm:text-2xl font-semibold mb-5"
             style={{ color: "var(--teal)", fontFamily: "var(--font-display)" }}
           >
             {personal.title}
@@ -167,7 +178,7 @@ export default function Hero() {
           </motion.p>
 
           {/* CTA Buttons */}
-          <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
+          <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-4">
             <a
               href="#projects"
               onClick={(e) => {
