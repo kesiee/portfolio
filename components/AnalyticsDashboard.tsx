@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import { computeGenderProbability, countryName } from "@/lib/analytics";
@@ -38,37 +38,112 @@ function pct(value: number, max: number) {
   return max === 0 ? 0 : Math.round((value / max) * 100);
 }
 
-/* ---------- small components ---------- */
+/* ---------- animated counter ---------- */
+function AnimatedNumber({ target, duration = 1.2 }: { target: number; duration?: number }) {
+  const [current, setCurrent] = useState(0);
+  const ref = useRef<number>(0);
+
+  useEffect(() => {
+    const start = ref.current;
+    const diff = target - start;
+    if (diff === 0) return;
+
+    const startTime = performance.now();
+    let raf: number;
+
+    function tick(now: number) {
+      const elapsed = (now - startTime) / (duration * 1000);
+      if (elapsed >= 1) {
+        setCurrent(target);
+        ref.current = target;
+        return;
+      }
+      // Ease-out cubic
+      const ease = 1 - Math.pow(1 - elapsed, 3);
+      const val = Math.round(start + diff * ease);
+      setCurrent(val);
+      raf = requestAnimationFrame(tick);
+    }
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target, duration]);
+
+  return <>{current.toLocaleString()}</>;
+}
+
+/* ---------- live pulse ---------- */
+function LivePulse() {
+  return (
+    <span className="inline-flex items-center gap-2">
+      <span className="relative flex h-2.5 w-2.5">
+        <span
+          className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+          style={{ backgroundColor: "var(--teal)" }}
+        />
+        <span
+          className="relative inline-flex rounded-full h-2.5 w-2.5"
+          style={{ backgroundColor: "var(--teal)" }}
+        />
+      </span>
+      <span
+        className="text-xs font-medium uppercase tracking-wider"
+        style={{ color: "var(--teal)", fontFamily: "var(--font-mono)" }}
+      >
+        Live
+      </span>
+    </span>
+  );
+}
+
+/* ---------- stat card with animated number + icon ---------- */
 function StatCard({
   label,
   value,
+  icon,
   delay,
+  glow,
 }: {
   label: string;
-  value: string | number;
+  value: number;
+  icon: string;
   delay: number;
+  glow?: string;
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay }}
-      className="p-5 rounded-xl border"
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.5, delay }}
+      className="relative p-5 rounded-xl border overflow-hidden group"
       style={{ backgroundColor: "var(--card)", borderColor: "var(--border)" }}
     >
+      {/* Subtle glow on hover */}
       <div
-        className="text-3xl font-extrabold mb-1"
-        style={{ color: "var(--amber)", fontFamily: "var(--font-display)" }}
-      >
-        {value}
-      </div>
-      <div className="text-sm" style={{ color: "var(--muted)" }}>
-        {label}
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{
+          background: `radial-gradient(circle at 50% 50%, ${glow || "rgba(245,158,11,0.06)"}, transparent 70%)`,
+        }}
+      />
+      <div className="relative">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-2xl">{icon}</span>
+        </div>
+        <div
+          className="text-3xl font-extrabold mb-1 tabular-nums"
+          style={{ color: "var(--amber)", fontFamily: "var(--font-display)" }}
+        >
+          <AnimatedNumber target={value} />
+        </div>
+        <div className="text-sm" style={{ color: "var(--muted)" }}>
+          {label}
+        </div>
       </div>
     </motion.div>
   );
 }
 
+/* ---------- bar ---------- */
 function Bar({
   label,
   value,
@@ -110,97 +185,150 @@ function Bar({
         </span>
       </div>
       <div
-        className="h-2 rounded-full overflow-hidden"
+        className="h-2.5 rounded-full overflow-hidden"
         style={{ backgroundColor: "var(--border)" }}
       >
         <motion.div
           className="h-full rounded-full"
-          style={{ backgroundColor: "var(--amber)" }}
+          style={{
+            background: "linear-gradient(90deg, var(--amber), var(--teal))",
+          }}
           initial={{ width: 0 }}
           animate={{ width: `${width}%` }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         />
       </div>
     </button>
   );
 }
 
+/* ---------- daily chart ---------- */
 function DailyChart({ daily }: { daily: Record<string, number> }) {
   const entries = Object.entries(daily);
   const max = Math.max(...entries.map(([, v]) => v), 1);
 
   return (
-    <div className="flex items-end gap-[3px] h-24">
-      {entries.map(([date, count], i) => (
-        <motion.div
-          key={date}
-          className="flex-1 rounded-t"
-          style={{ backgroundColor: "var(--amber)" }}
-          initial={{ height: 0 }}
-          animate={{ height: `${Math.max((count / max) * 100, 2)}%` }}
-          transition={{ duration: 0.4, delay: i * 0.02 }}
-          title={`${date}: ${count} views`}
-        />
-      ))}
+    <div className="flex items-end gap-[3px] h-32">
+      {entries.map(([date, count], i) => {
+        const h = Math.max((count / max) * 100, 3);
+        return (
+          <motion.div
+            key={date}
+            className="flex-1 rounded-t relative group"
+            style={{
+              background: count > 0
+                ? "linear-gradient(180deg, var(--amber), rgba(245,158,11,0.3))"
+                : "var(--border)",
+            }}
+            initial={{ height: 0 }}
+            animate={{ height: `${h}%` }}
+            transition={{ duration: 0.5, delay: i * 0.015 }}
+          >
+            {/* Tooltip */}
+            <div
+              className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 rounded text-[10px] font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none"
+              style={{
+                backgroundColor: "var(--card)",
+                color: "var(--text)",
+                border: "1px solid var(--border)",
+                fontFamily: "var(--font-mono)",
+              }}
+            >
+              {date.slice(5)}: {count}
+            </div>
+          </motion.div>
+        );
+      })}
     </div>
   );
 }
 
+/* ---------- gender widget ---------- */
 function GenderWidget({ countries }: { countries: Record<string, number> }) {
   const { male, female, other } = computeGenderProbability(countries);
   const segments = [
-    { label: "Male", value: male, color: "#3b82f6" },
-    { label: "Female", value: female, color: "#ec4899" },
-    { label: "Other", value: other, color: "#a855f7" },
+    { label: "Male", value: male, color: "#3b82f6", icon: "♂" },
+    { label: "Female", value: female, color: "#ec4899", icon: "♀" },
+    { label: "Other", value: other, color: "#a855f7", icon: "⚧" },
   ];
 
   return (
     <div
-      className="p-5 rounded-xl border"
+      className="p-5 rounded-xl border h-full"
       style={{ backgroundColor: "var(--card)", borderColor: "var(--border)" }}
     >
       <h3
-        className="text-sm font-semibold mb-4"
+        className="text-sm font-semibold mb-5"
         style={{ color: "var(--text)" }}
       >
         Estimated Gender Split
       </h3>
 
-      {/* Stacked bar */}
-      <div className="flex h-4 rounded-full overflow-hidden mb-4">
-        {segments.map((s) => (
-          <motion.div
-            key={s.label}
-            style={{ backgroundColor: s.color }}
-            initial={{ width: 0 }}
-            animate={{ width: `${s.value}%` }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          />
-        ))}
+      {/* Donut-style ring segments */}
+      <div className="flex justify-center mb-5">
+        <div className="relative w-32 h-32">
+          <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90">
+            {segments.reduce<{ offset: number; elements: React.ReactNode[] }>(
+              (acc, s, i) => {
+                const dash = s.value * 0.94; // leave small gap
+                acc.elements.push(
+                  <motion.circle
+                    key={s.label}
+                    cx="18"
+                    cy="18"
+                    r="15"
+                    fill="none"
+                    stroke={s.color}
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeDasharray={`${dash} ${100 - dash}`}
+                    strokeDashoffset={-acc.offset}
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 1 }}
+                    transition={{ duration: 1, delay: 0.3 + i * 0.15 }}
+                  />
+                );
+                acc.offset += s.value;
+                return acc;
+              },
+              { offset: 0, elements: [] },
+            ).elements}
+          </svg>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span
+              className="text-lg font-bold"
+              style={{ color: "var(--text)", fontFamily: "var(--font-display)" }}
+            >
+              {male}%
+            </span>
+          </div>
+        </div>
       </div>
 
-      <div className="flex justify-between">
+      <div className="space-y-2">
         {segments.map((s) => (
-          <div key={s.label} className="flex items-center gap-2">
-            <span
-              className="w-2.5 h-2.5 rounded-full"
-              style={{ backgroundColor: s.color }}
-            />
-            <span className="text-xs" style={{ color: "var(--muted)" }}>
-              {s.label}{" "}
+          <div key={s.label} className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
               <span
-                className="font-semibold"
-                style={{ color: "var(--text)" }}
-              >
-                {s.value}%
+                className="w-2.5 h-2.5 rounded-full"
+                style={{ backgroundColor: s.color }}
+              />
+              <span className="text-xs" style={{ color: "var(--muted)" }}>
+                {s.icon} {s.label}
               </span>
+            </div>
+            <span
+              className="text-xs font-semibold tabular-nums"
+              style={{ color: "var(--text)", fontFamily: "var(--font-mono)" }}
+            >
+              {s.value}%
             </span>
           </div>
         ))}
       </div>
 
       <p
-        className="text-[10px] mt-3 leading-relaxed"
+        className="text-[10px] mt-4 leading-relaxed"
         style={{ color: "var(--muted)" }}
       >
         Based on ITU regional internet-usage demographics weighted by visitor
@@ -210,13 +338,45 @@ function GenderWidget({ countries }: { countries: Record<string, number> }) {
   );
 }
 
-/* ---------- main dashboard ---------- */
+/* ---------- floating particles ---------- */
+function Particles() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {Array.from({ length: 20 }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full"
+          style={{
+            width: Math.random() * 4 + 2,
+            height: Math.random() * 4 + 2,
+            backgroundColor: i % 2 === 0 ? "var(--amber)" : "var(--teal)",
+            opacity: 0.15,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, -(Math.random() * 80 + 40), 0],
+            x: [0, (Math.random() - 0.5) * 60, 0],
+            opacity: [0.1, 0.25, 0.1],
+          }}
+          transition={{
+            duration: Math.random() * 8 + 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: Math.random() * 4,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* ========== main dashboard ========== */
 export default function AnalyticsDashboard() {
   const { theme, toggleTheme } = useTheme();
   const [data, setData] = useState<OverviewData | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Drill-down state
   const [drillLevel, setDrillLevel] = useState<DrillLevel>("countries");
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
@@ -234,6 +394,9 @@ export default function AnalyticsDashboard() {
 
   useEffect(() => {
     fetchOverview();
+    // Refresh every 30s for "live" feel
+    const interval = setInterval(fetchOverview, 30000);
+    return () => clearInterval(interval);
   }, [fetchOverview]);
 
   async function drillIntoCountry(code: string) {
@@ -278,7 +441,6 @@ export default function AnalyticsDashboard() {
     }
   }
 
-  /* ---- breadcrumb label ---- */
   function breadcrumb() {
     const parts: string[] = ["All Countries"];
     if (selectedCountry) parts.push(countryName(selectedCountry));
@@ -286,7 +448,6 @@ export default function AnalyticsDashboard() {
     return parts.join(" / ");
   }
 
-  /* ---- which rows to show in geo panel ---- */
   const geoRows =
     drillLevel === "countries"
       ? sorted(data?.countries ?? {}).map(([code, count]) => ({
@@ -314,13 +475,48 @@ export default function AnalyticsDashboard() {
 
   const geoMax = geoRows.length > 0 ? geoRows[0].value : 0;
 
-  /* ---- render ---- */
   return (
     <main
-      className="min-h-screen pt-24 pb-16"
+      className="relative min-h-screen pt-24 pb-16 overflow-hidden"
       style={{ backgroundColor: "var(--bg)" }}
     >
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Background effects */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "radial-gradient(circle, var(--dot-color) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+        }}
+      />
+      <Particles />
+
+      {/* Ambient glow orbs */}
+      <motion.div
+        className="absolute rounded-full pointer-events-none"
+        style={{
+          width: 500,
+          height: 500,
+          background: "radial-gradient(circle, rgba(245, 158, 11, 0.05) 0%, transparent 70%)",
+          top: "-5%",
+          right: "10%",
+        }}
+        animate={{ x: [0, 30, -15, 0], y: [0, -20, 15, 0] }}
+        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute rounded-full pointer-events-none"
+        style={{
+          width: 400,
+          height: 400,
+          background: "radial-gradient(circle, rgba(45, 212, 191, 0.04) 0%, transparent 70%)",
+          bottom: "10%",
+          left: "5%",
+        }}
+        animate={{ x: [0, -20, 10, 0], y: [0, 15, -10, 0] }}
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -335,30 +531,33 @@ export default function AnalyticsDashboard() {
             >
               &larr; Back to portfolio
             </a>
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg border transition-all duration-200 hover:scale-105"
-              style={{
-                borderColor: "var(--border)",
-                color: "var(--muted)",
-                backgroundColor: "var(--card)",
-              }}
-              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-            >
-              {theme === "dark" ? (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="5" />
-                  <line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" />
-                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                  <line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" />
-                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                </svg>
-              ) : (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                </svg>
-              )}
-            </button>
+            <div className="flex items-center gap-3">
+              <LivePulse />
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-lg border transition-all duration-200 hover:scale-105"
+                style={{
+                  borderColor: "var(--border)",
+                  color: "var(--muted)",
+                  backgroundColor: "var(--card)",
+                }}
+                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+              >
+                {theme === "dark" ? (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                    <line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                  </svg>
+                ) : (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
           <h1
             className="text-3xl sm:text-4xl font-bold"
@@ -367,8 +566,8 @@ export default function AnalyticsDashboard() {
             Live Analytics
           </h1>
           <p className="mt-2 text-sm" style={{ color: "var(--muted)" }}>
-            Real-time visitor data for this portfolio. Click countries to drill
-            down.
+            Real-time visitor data &middot; auto-refreshes every 30s &middot;
+            click countries to drill down
           </p>
         </motion.div>
 
@@ -389,18 +588,10 @@ export default function AnalyticsDashboard() {
           <>
             {/* Stat cards */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
-              <StatCard label="Total Views" value={data.total.toLocaleString()} delay={0} />
-              <StatCard label="Unique Visitors" value={data.unique.toLocaleString()} delay={0.05} />
-              <StatCard
-                label="Countries"
-                value={Object.keys(data.countries).length}
-                delay={0.1}
-              />
-              <StatCard
-                label="Pages Tracked"
-                value={Object.keys(data.pages).length}
-                delay={0.15}
-              />
+              <StatCard label="Total Views" value={data.total} icon="👁" delay={0} glow="rgba(245,158,11,0.08)" />
+              <StatCard label="Unique Visitors" value={data.unique} icon="👤" delay={0.05} glow="rgba(45,212,191,0.08)" />
+              <StatCard label="Countries" value={Object.keys(data.countries).length} icon="🌍" delay={0.1} glow="rgba(59,130,246,0.08)" />
+              <StatCard label="Pages Tracked" value={Object.keys(data.pages).length} icon="📄" delay={0.15} glow="rgba(168,85,247,0.08)" />
             </div>
 
             {/* Globe */}
@@ -427,25 +618,32 @@ export default function AnalyticsDashboard() {
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+              transition={{ delay: 0.25 }}
               className="p-5 rounded-xl border mb-10"
               style={{
                 backgroundColor: "var(--card)",
                 borderColor: "var(--border)",
               }}
             >
-              <h3
-                className="text-sm font-semibold mb-4"
-                style={{ color: "var(--text)" }}
-              >
-                Daily Views — Last 30 Days
-              </h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3
+                  className="text-sm font-semibold"
+                  style={{ color: "var(--text)" }}
+                >
+                  Daily Views — Last 30 Days
+                </h3>
+                <span
+                  className="text-xs tabular-nums"
+                  style={{ color: "var(--muted)", fontFamily: "var(--font-mono)" }}
+                >
+                  Hover for details
+                </span>
+              </div>
               <DailyChart daily={data.daily} />
             </motion.div>
 
             {/* Two-column: Geo + Gender */}
             <div className="grid lg:grid-cols-5 gap-6 mb-10">
-              {/* Geo panel — wider */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -510,7 +708,6 @@ export default function AnalyticsDashboard() {
                 </AnimatePresence>
               </motion.div>
 
-              {/* Gender panel */}
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
