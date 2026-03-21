@@ -37,7 +37,7 @@ export default function Publications() {
           </h2>
         </motion.div>
 
-        <div className="space-y-6 max-w-4xl">
+        <div className="space-y-6">
           {publications.map((pub, i) => (
             <motion.article
               key={pub.doi}
