@@ -46,20 +46,23 @@ export default function About() {
           style={{ color: "var(--muted)", textAlign: "justify" }}
         >
           <p>
-            Data Scientist and ML Engineer with 3+ years of experience in
-            time-series forecasting, clustering, anomaly detection, and scalable
-            data pipelines for smart-building and energy systems.
+            ML Engineer with 3+ years building end-to-end forecasting and
+            anomaly detection systems for real-world infrastructure. Background
+            in data engineering (Spark/AWS) evolved into full ML system
+            design — from ETL pipelines to model training, evaluation, and
+            deployment.
           </p>
           <p>
-            Led energy prediction research for 91 buildings at Fort Moore,
-            coordinating with academic and industry stakeholders (US Ignite).
-            First-author IEEE Access publication on ML-driven energy fault
-            detection. Experienced with Python, PySpark, XGBoost, Azure
-            Databricks, and AWS.
+            Developed an energy prediction system for 91 buildings at Fort
+            Moore (R&sup2; 0.82 &rarr; 0.98), delivered to US Ignite. Built
+            scalable pipelines on Azure Databricks processing 1.2M+
+            time-series records. First-author IEEE Access publication on
+            ML-driven energy fault detection.
           </p>
           <p>
-            Currently exploring LLM and RAG architectures. STEM OPT authorized
-            through 02/2029.
+            Currently building llmgate (open-source LLM connector, 21
+            providers) and competing on Kaggle. STEM OPT authorized through
+            02/2029.
           </p>
         </motion.div>
 

@@ -3,9 +3,9 @@ export const personal = {
   firstName: "Shashank",
   lastName: "Kammanahalli Chandra Sekhara",
   nickname: "Kesiee",
-  title: "Data Scientist",
+  title: "ML Engineer",
   tagline:
-    "Data Scientist & ML Engineer with 3+ years in time-series forecasting, clustering, anomaly detection, and scalable data pipelines. First-author IEEE Access publication. STEM OPT authorized through 02/2029.",
+    "ML Engineer with 3+ years building end-to-end forecasting and anomaly detection pipelines using PySpark, XGBoost, and Azure Databricks. Background in data engineering evolved into full ML system design — from ETL to model training, evaluation, and deployment. First-author IEEE Access publication. STEM OPT authorized through 02/2029.",
   location: "Open to relocation",
   email: "shashankkesiee@gmail.com",
   phone: "+1 (470) 546-3083",
@@ -19,38 +19,46 @@ export const personal = {
 
 export const skills = [
   {
+    category: "ML & Modeling",
+    items: [
+      "XGBoost",
+      "PyTorch",
+      "Scikit-learn",
+      "LightGBM",
+      "GMM",
+      "Feature Engineering",
+      "Time-Series Forecasting",
+      "Anomaly Detection",
+    ],
+  },
+  {
+    category: "Data Engineering",
+    items: [
+      "PySpark",
+      "Apache Spark",
+      "Delta Lake",
+      "Pandas",
+      "NumPy",
+      "ETL Pipelines",
+    ],
+  },
+  {
+    category: "MLOps & Cloud",
+    items: [
+      "Azure Databricks",
+      "MLflow",
+      "AWS (S3, EMR, Lambda)",
+      "Docker",
+      "FastAPI",
+      "Git",
+    ],
+  },
+  {
     category: "Programming",
     items: ["Python", "SQL", "Scala", "Java"],
   },
   {
-    category: "Machine Learning & Statistics",
-    items: [
-      "XGBoost",
-      "Scikit-learn",
-      "PyTorch",
-      "GMM",
-      "Feature Engineering",
-      "Time-Series Forecasting",
-    ],
-  },
-  {
-    category: "Data & Platforms",
-    items: [
-      "Anomaly Detection",
-      "Pandas",
-      "NumPy",
-      "PySpark",
-      "Apache Spark",
-      "Delta Lake",
-      "Azure Databricks",
-    ],
-  },
-  {
-    category: "Cloud & DevOps",
-    items: ["AWS (S3, EMR, Lambda)", "Azure", "MLflow", "Git"],
-  },
-  {
-    category: "Data Analytics & Visualization",
+    category: "Visualization & Tools",
     items: ["Power BI", "Matplotlib", "Streamlit", "Flask"],
   },
 ];
@@ -98,6 +106,12 @@ export const otherProjects = [
     link: "https://www.kaggle.com/code/shashankkc/stl-forecasting",
   },
   {
+    title: "BirdCLEF+ 2026",
+    description: "Kaggle competition — bird species identification from audio. Fine-tuned a pretrained model on competition data using PyTorch and transfer learning.",
+    tags: ["PyTorch", "Transfer Learning", "Audio ML"],
+    link: "https://www.kaggle.com/competitions/birdclef-2026",
+  },
+  {
     title: "HEDGE Forecast",
     description: "Kaggle energy demand forecasting — LightGBM pipeline across 20 models with advanced feature engineering and ensemble strategies.",
     tags: ["LightGBM", "Time Series", "Python"],
@@ -113,8 +127,8 @@ export const otherProjects = [
 
 export const experience = [
   {
-    role: "Data Science Research Assistant",
-    focus: "Time-Series Forecasting & Clustering",
+    role: "ML Engineer / Research Assistant",
+    focus: "End-to-End ML Pipelines & Forecasting",
     company: "Columbus State University",
     location: "Columbus, GA",
     period: "Jun 2024 – Dec 2025",
@@ -128,7 +142,7 @@ export const experience = [
   },
   {
     role: "Data Engineer",
-    focus: "Schema Automation & Spark Pipelines",
+    focus: "Spark Pipelines & Schema Automation",
     company: "Innova Solutions",
     location: "Chennai, TN",
     period: "Jun 2022 – May 2023",
