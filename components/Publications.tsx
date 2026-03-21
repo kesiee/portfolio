@@ -79,7 +79,7 @@ export default function Publications() {
                 {/* Title */}
                 <h3
                   className="text-base font-semibold leading-relaxed"
-                  style={{ color: "var(--text)" }}
+                  style={{ color: "var(--text)", textAlign: "justify" }}
                 >
                   {pub.title}
                 </h3>
