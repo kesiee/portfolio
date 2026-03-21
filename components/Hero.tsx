@@ -172,7 +172,7 @@ export default function Hero() {
           <motion.p
             variants={itemVariants}
             className="text-base sm:text-lg max-w-2xl mb-10 leading-relaxed"
-            style={{ color: "var(--muted)" }}
+            style={{ color: "var(--muted)", textAlign: "justify" }}
           >
             {personal.tagline}
           </motion.p>

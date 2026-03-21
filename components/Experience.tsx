@@ -119,7 +119,7 @@ export default function Experience() {
                         />
                         <p
                           className="text-sm leading-relaxed"
-                          style={{ color: "var(--muted)" }}
+                          style={{ color: "var(--muted)", textAlign: "justify" }}
                         >
                           {bullet}
                         </p>

@@ -42,8 +42,8 @@ export default function About() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="max-w-3xl space-y-4 text-base leading-relaxed mb-12"
-          style={{ color: "var(--muted)" }}
+          className="space-y-4 text-base leading-relaxed mb-12"
+          style={{ color: "var(--muted)", textAlign: "justify" }}
         >
           <p>
             Data Scientist and ML Engineer with 3+ years of experience in
@@ -64,7 +64,7 @@ export default function About() {
         </motion.div>
 
         {/* Education */}
-        <div className="grid sm:grid-cols-2 gap-4 max-w-3xl">
+        <div className="grid sm:grid-cols-2 gap-4">
           {education.map((edu, i) => (
             <motion.div
               key={edu.school}

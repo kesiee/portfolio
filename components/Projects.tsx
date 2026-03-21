@@ -92,7 +92,7 @@ export default function Projects() {
               {/* Description */}
               <p
                 className="text-sm leading-relaxed flex-1 mb-5"
-                style={{ color: "var(--muted)" }}
+                style={{ color: "var(--muted)", textAlign: "justify" }}
               >
                 {project.description}
               </p>
@@ -192,7 +192,7 @@ export default function Projects() {
                   </div>
                   <p
                     className="text-xs leading-relaxed"
-                    style={{ color: "var(--muted)" }}
+                    style={{ color: "var(--muted)", textAlign: "justify" }}
                   >
                     {project.description}
                   </p>
