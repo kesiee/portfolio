@@ -3,165 +3,139 @@ export const personal = {
   firstName: "Shashank",
   lastName: "Kammanahalli Chandra Sekhara",
   nickname: "Kesiee",
-  title: "AI/ML Engineer & Data Scientist",
+  title: "Data Scientist",
   tagline:
-    "2x IEEE first-author researcher. Building production ML pipelines on 1.2M+ records. Seeking Data Scientist & ML Engineer roles.",
+    "Data Scientist & ML Engineer with 3+ years in time-series forecasting, clustering, anomaly detection, and scalable data pipelines. First-author IEEE Access publication. STEM OPT authorized through 02/2029.",
+  location: "Open to relocation",
   email: "shashankkesiee@gmail.com",
   phone: "+1 (470) 546-3083",
   github: "https://github.com/kesiee",
-  linkedin:
-    "https://www.linkedin.com/in/shashank-kammanahalli-chandra-sekhara-72778a230/",
+  linkedin: "https://www.linkedin.com/in/shashankkammanahalli",
   orcid: "https://orcid.org/0009-0004-4676-5014",
+  portfolio: "shashank-kammanahalli.vercel.app",
   resumeUrl: "/resume",
   opt: true,
 };
 
 export const skills = [
   {
-    category: "AI / ML",
+    category: "Programming",
+    items: ["Python", "SQL", "Scala", "Java"],
+  },
+  {
+    category: "Machine Learning & Statistics",
     items: [
       "XGBoost",
-      "LightGBM",
-      "scikit-learn",
+      "Scikit-learn",
       "PyTorch",
-      "TensorFlow",
-      "LSTM",
-      "tslearn",
-      "DTW",
-      "MLflow",
+      "GMM",
+      "Feature Engineering",
+      "Time-Series Forecasting",
     ],
   },
   {
-    category: "Data Engineering",
+    category: "Data & Platforms",
     items: [
+      "Anomaly Detection",
+      "Pandas",
+      "NumPy",
       "PySpark",
       "Apache Spark",
       "Delta Lake",
-      "Airflow",
-      "Hadoop",
-      "Databricks",
-      "Feature Engineering",
-    ],
-  },
-  {
-    category: "Cloud",
-    items: [
-      "AWS S3",
-      "AWS EC2",
-      "AWS EMR",
-      "AWS Lambda",
-      "CloudWatch",
-      "IAM",
       "Azure Databricks",
     ],
   },
   {
-    category: "Languages & Tools",
-    items: [
-      "Python",
-      "Scala",
-      "SQL",
-      "Pandas",
-      "NumPy",
-      "Matplotlib",
-      "Seaborn",
-      "Git",
-    ],
+    category: "Cloud & DevOps",
+    items: ["AWS (S3, EMR, Lambda)", "Azure", "MLflow", "Git"],
+  },
+  {
+    category: "Data Analytics & Visualization",
+    items: ["Power BI", "Matplotlib", "Streamlit", "Flask"],
   },
 ];
 
-export const projects = [
+/* ── Impact Projects (detailed cards) ── */
+export const impactProjects = [
   {
-    title: "HEDGE Forecast",
-    subtitle: "Kaggle Competition",
+    title: "llmgate",
+    subtitle: "Open Source · Python Library",
     description:
-      "LightGBM time-series forecasting pipeline across 20 models for energy demand prediction. Achieved competition score of 0.1322+ with advanced feature engineering and ensemble strategies.",
-    tags: [
-      "LightGBM",
-      "Time Series",
-      "Python",
-      "Feature Engineering",
-      "Ensemble",
-    ],
-    link: "https://www.kaggle.com/shashankkc",
-    metric: { label: "Score", value: "0.1322+" },
-  },
-  {
-    title: "Store Sales Forecasting",
-    subtitle: "Kaggle · Corporación Favorita",
-    description:
-      "Time-series forecasting pipeline for 54 stores and 33 product families using XGBoost with lag features, STL decomposition, and GMM-based soft clustering for store-level behavioral archetypes.",
-    tags: ["XGBoost", "GMM", "STL Decomposition", "Python", "Pandas"],
-    link: "https://www.kaggle.com/code/shashankkc/stl-forecasting",
-    metric: { label: "Stores", value: "54 × 33" },
-  },
-  {
-    title: "Flight Analysis",
-    subtitle: "Spark · Scala · AWS",
-    description:
-      "Distributed Spark application analyzing over 130 million commercial airline flight records. Large-scale data cleaning, delay metrics computation, and daily pattern analysis on AWS S3 + EMR.",
-    tags: ["Apache Spark", "Scala", "AWS S3", "AWS EMR", "Zeppelin"],
-    link: "https://gitlab.com/shashankkesiee/commercial-flights-analysis",
-    metric: { label: "Records", value: "130M+" },
-  },
-  {
-    title: "Telco Customer Churn",
-    subtitle: "ML Pipeline · Jupyter",
-    description:
-      "End-to-end ML pipeline predicting telecom customer churn. Full preprocessing, feature engineering, model selection, anomaly handling, and evaluation with detailed Jupyter notebook documentation.",
-    tags: ["scikit-learn", "Python", "Jupyter", "Classification", "EDA"],
-    link: "https://github.com/kesiee/ml_term_project_2024",
-    metric: { label: "Type", value: "Classification" },
+      "Lightweight plug-and-play LLM connector library — 2 dependencies (httpx, PyYAML), 21 providers, YAML config, zero bloat. A ~2 MB alternative to LiteLLM (~200 MB+). MIT licensed.",
+    tags: ["Python", "httpx", "PyYAML", "LLM", "Open Source"],
+    link: "https://github.com/kesiee/llmgate",
+    metric: { label: "Providers", value: "21" },
   },
   {
     title: "Job Application Automation",
     subtitle: "Full-Stack Pipeline · Python",
     description:
-      "Automated pipeline scraping 175+ company career pages and job board APIs, scoring postings against resumes using TF-IDF + sentence-transformer matching, with a Flask web dashboard for tracking and analytics.",
-    tags: ["Python", "Flask", "NLP", "Sentence Transformers", "SQLite", "Playwright"],
+      "End-to-end job scraping and matching pipeline across 175+ company career pages and job board APIs (Greenhouse, Lever, Ashby, Workday, Adzuna, Jooble). TF-IDF + sentence-transformer resume matching with per-profile scoring. Flask web dashboard with 4 tabs, SQLite storage, cron-scheduled pipeline.",
+    tags: ["Python", "Flask", "Sentence Transformers", "TF-IDF", "SQLite", "Playwright"],
     link: "https://github.com/kesiee/apply",
     metric: { label: "Companies", value: "175+" },
   },
 ];
 
+/* ── Other Projects (compact mentions) ── */
+export const otherProjects = [
+  {
+    title: "Crypto Live Dashboard",
+    description: "Real-time cryptocurrency dashboard with WebSocket streaming from Binance/CoinGecko/CryptoCompare. Candlestick/line charts, EMA indicators, auto-refresh.",
+    tags: ["Python", "Streamlit", "WebSocket"],
+    link: "https://github.com/kesiee/streamlit-crypto-live-dashboard",
+  },
+  {
+    title: "Universal Time-Series Anomaly Detection",
+    description: "Streamlit app implementing Bollinger-band-based anomaly detection for arbitrary time series, packaging IEEE research into an interactive tool.",
+    tags: ["Python", "Streamlit"],
+    link: "https://github.com/kesiee/streamlit-universal-timeseries-anomaly-detection",
+  },
+  {
+    title: "Store Sales Forecasting",
+    description: "Kaggle competition — XGBoost with STL decomposition and GMM clustering for 54 stores and 33 product families. RMSLE improved from 2.13 to 0.56.",
+    tags: ["XGBoost", "GMM", "STL", "Python"],
+    link: "https://www.kaggle.com/code/shashankkc/stl-forecasting",
+  },
+  {
+    title: "HEDGE Forecast",
+    description: "Kaggle energy demand forecasting — LightGBM pipeline across 20 models with advanced feature engineering and ensemble strategies.",
+    tags: ["LightGBM", "Time Series", "Python"],
+    link: "https://www.kaggle.com/shashankkc",
+  },
+  {
+    title: "Telco Customer Churn",
+    description: "End-to-end ML classification pipeline for telecom churn prediction with full preprocessing, feature engineering, and evaluation.",
+    tags: ["scikit-learn", "Python", "Classification"],
+    link: "https://github.com/kesiee/ml_term_project_2024",
+  },
+];
+
 export const experience = [
   {
-    role: "Graduate Research Assistant",
-    focus: "Clustering & Forecasting Research",
+    role: "Data Science Research Assistant",
+    focus: "Time-Series Forecasting & Clustering",
     company: "Columbus State University",
     location: "Columbus, GA",
-    period: "May 2025 – Dec 2025",
+    period: "Jun 2024 – Dec 2025",
     bullets: [
-      "Multivariate time-series clustering across 90+ buildings using tslearn with DTW and Euclidean distance methods to identify energy consumption archetypes.",
-      "Implemented seasonal-aware clustering by isolating dominant operational seasons and clustering on season-specific temporal dynamics.",
-      "Integrated weather, occupancy, and facility-area signals to improve semantic separation of operational profiles.",
-      "Evaluated cluster quality using silhouette scores, inertia, and downstream XGBoost forecasting performance (R², SMAPE) at the cluster level.",
+      "Led energy prediction for 91 buildings at Fort Moore, improving overall model R² by ~19.5% (0.82 to 0.98) through rolling Z-score outlier detection, STL imputation, and optimized feature engineering.",
+      "Built end-to-end ETL pipelines on Azure Databricks and Delta Lake, integrating 3 data sources (Azure Blob Storage, OpenWeatherMap API, SQL occupancy tables) to process 1.2M+ time-series records.",
+      "Identified scalability bottleneck in Pandas-based POC and drove migration to PySpark, enabling distributed computing for future deployment across 300+ buildings.",
+      "Implemented Bollinger Bands and RMSE threshold anomaly detection methods for energy fault detection, contributing to a co-authored IEEE publication benchmarking 4 methods on the LEAD dataset.",
+      "Student Dropout Prediction: Built XGBoost classifier on CSU student data, achieved highest accuracy (0.64) across 4 teams.",
     ],
   },
   {
-    role: "Graduate Research Assistant",
-    focus: "ML Engineer",
-    company: "Columbus State University",
-    location: "Columbus, GA",
-    period: "Jun 2024 – Apr 2025",
-    bullets: [
-      "Built forecasting and anomaly-detection models for 91 buildings using Python, PySpark, and XGBoost — achieving up to R² = 0.98.",
-      "Deployed end-to-end data pipelines on Databricks and Delta Lake, processing 1.2M+ time-series records for real-time analysis.",
-      "Engineered advanced time-series features: lags, rolling stats, Fourier encodings, STL decomposition.",
-      "Applied Bollinger Bands and threshold-based anomaly detection to flag abnormal energy consumption patterns.",
-    ],
-  },
-  {
-    role: "Junior Software Engineer",
-    focus: "Data Engineering",
+    role: "Data Engineer",
+    focus: "Schema Automation & Spark Pipelines",
     company: "Innova Solutions",
     location: "Chennai, TN",
     period: "Jun 2022 – May 2023",
     bullets: [
-      "Automated data schema validation and quality checks using PySpark and Scala, reducing manual QA effort.",
-      "Developed scalable JSON parsing workflows for complex nested data structures using Jackson in Scala.",
-      "Converted Excel-based schema definitions into structured JSON metadata using Python automation.",
-      "Improved Spark ETL efficiency and supported reliable data ingestion and deployment workflows.",
+      "Resolved a schema validation problem in 2 days that had been unresolved for 6 weeks (3 sprints), automating PySpark/Scala validation across 10+ pipelines and cutting manual QA effort.",
+      "Built a modular script using Jackson (Scala) and Python to auto-generate Spark-compatible JSON schemas from any XML pipeline definition, handling complex nested healthcare data structures.",
+      "Flight Analysis: Built an event-driven Spark pipeline on AWS — S3 triggered Lambda/boto3 to spin up EMR jobs processing 130M+ flight records.",
     ],
   },
 ];
@@ -178,9 +152,9 @@ export const publications = [
   {
     title:
       "A Practical Framework for Energy Fault Detection in Smart Buildings",
-    journal: "IEEE Xplore",
+    journal: "IEEE Xplore / AIRC 2025",
     year: "2025",
-    note: "First Author",
+    note: "Co-Author",
     doi: "https://doi.org/10.1109/AIRC64931.2025.11077504",
   },
 ];

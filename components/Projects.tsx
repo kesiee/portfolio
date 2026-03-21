@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { projects } from "@/lib/data";
+import { impactProjects, otherProjects } from "@/lib/data";
 
 export default function Projects() {
   const ref = useRef(null);
@@ -37,9 +37,9 @@ export default function Projects() {
           </h2>
         </motion.div>
 
-        {/* Project grid */}
-        <div className="grid sm:grid-cols-2 gap-6">
-          {projects.map((project, i) => (
+        {/* ── Impact Projects (full cards) ── */}
+        <div className="grid sm:grid-cols-2 gap-6 mb-16">
+          {impactProjects.map((project, i) => (
             <motion.article
               key={project.title}
               initial={{ opacity: 0, y: 30 }}
@@ -137,6 +137,79 @@ export default function Projects() {
             </motion.article>
           ))}
         </div>
+
+        {/* ── Other Projects (compact list) ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <h3
+            className="text-lg font-bold mb-6"
+            style={{
+              fontFamily: "var(--font-display)",
+              color: "var(--text)",
+            }}
+          >
+            More Projects
+          </h3>
+
+          <div className="space-y-4">
+            {otherProjects.map((project, i) => (
+              <motion.div
+                key={project.title}
+                initial={{ opacity: 0, x: -15 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.4, delay: 0.4 + i * 0.08 }}
+                className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-5 p-4 rounded-xl border transition-all duration-200 hover:border-amber-500/30"
+                style={{
+                  backgroundColor: "var(--card)",
+                  borderColor: "var(--border)",
+                }}
+              >
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-3 mb-1.5">
+                    <h4
+                      className="text-sm font-bold truncate"
+                      style={{ color: "var(--text)" }}
+                    >
+                      {project.title}
+                    </h4>
+                    <div className="flex gap-1.5 shrink-0">
+                      {project.tags.slice(0, 3).map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[10px] px-2 py-0.5 rounded-full border"
+                          style={{
+                            borderColor: "var(--border)",
+                            color: "var(--muted)",
+                          }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <p
+                    className="text-xs leading-relaxed"
+                    style={{ color: "var(--muted)" }}
+                  >
+                    {project.description}
+                  </p>
+                </div>
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="shrink-0 text-xs font-semibold transition-opacity hover:opacity-70"
+                  style={{ color: "var(--teal)" }}
+                >
+                  View →
+                </a>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

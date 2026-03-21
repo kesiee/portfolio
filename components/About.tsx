@@ -110,26 +110,20 @@ export default function About() {
 
             <div className="space-y-4 text-base leading-relaxed" style={{ color: "var(--muted)" }}>
               <p>
-                I am an AI/ML Engineer and Data Scientist with a strong research
-                background in energy systems, time-series forecasting, and anomaly
-                detection. Currently completing my Master of Science in Applied Computer
-                Science (Data Science) at Columbus State University with a 4.0 GPA.
+                Data Scientist and ML Engineer with 3+ years of experience in
+                time-series forecasting, clustering, anomaly detection, and scalable
+                data pipelines for smart-building and energy systems.
               </p>
               <p>
-                My work spans the full ML lifecycle — from raw data ingestion and
-                large-scale feature engineering on 1.2M+ records with PySpark and
-                Databricks, to deploying production-grade forecasting models achieving
-                R² up to 0.98.
+                Led energy prediction research for 91 buildings at Fort Moore,
+                coordinating with academic and industry stakeholders (US Ignite).
+                First-author IEEE Access publication on ML-driven energy fault
+                detection. Experienced with Python, PySpark, XGBoost, Azure
+                Databricks, and AWS.
               </p>
               <p>
-                As a 2x IEEE first-author researcher, I have published frameworks
-                for energy fault detection and smart building ML systems, bridging
-                academic rigor with production engineering realities.
-              </p>
-              <p>
-                I thrive in environments where data complexity demands both engineering
-                precision and statistical creativity — from distributed Spark pipelines
-                to Kaggle competitions to peer-reviewed research.
+                Currently exploring LLM and RAG architectures. STEM OPT authorized
+                through 02/2029.
               </p>
             </div>
 
