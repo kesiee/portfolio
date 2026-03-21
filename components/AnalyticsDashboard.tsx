@@ -34,6 +34,14 @@ function sorted(obj: Record<string, number>) {
   return Object.entries(obj).sort(([, a], [, b]) => b - a);
 }
 
+function filterPages(pages: Record<string, number>) {
+  return Object.fromEntries(
+    Object.entries(pages).filter(
+      ([path]) => !path.includes("/view") && !path.startsWith("/api/") && !/^\/[a-f0-9]{16}/.test(path),
+    ),
+  );
+}
+
 function pct(value: number, max: number) {
   return max === 0 ? 0 : Math.round((value / max) * 100);
 }
@@ -99,7 +107,7 @@ function LivePulse() {
 /* ---------- SVG icons for stat cards ---------- */
 function EyeIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
       <circle cx="12" cy="12" r="3" />
     </svg>
@@ -108,7 +116,7 @@ function EyeIcon() {
 
 function UserIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
       <circle cx="12" cy="7" r="4" />
     </svg>
@@ -117,7 +125,7 @@ function UserIcon() {
 
 function GlobeIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="10" />
       <line x1="2" y1="12" x2="22" y2="12" />
       <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
@@ -127,7 +135,7 @@ function GlobeIcon() {
 
 function FileIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
       <polyline points="14 2 14 8 20 8" />
       <line x1="16" y1="13" x2="8" y2="13" />
@@ -631,7 +639,7 @@ export default function AnalyticsDashboard() {
               <StatCard label="Total Views" value={data.total} icon={<EyeIcon />} delay={0} glow="rgba(245,158,11,0.08)" />
               <StatCard label="Unique Visitors" value={data.unique} icon={<UserIcon />} delay={0.05} glow="rgba(45,212,191,0.08)" />
               <StatCard label="Countries" value={Object.keys(data.countries).length} icon={<GlobeIcon />} delay={0.1} glow="rgba(59,130,246,0.08)" />
-              <StatCard label="Pages Tracked" value={Object.keys(data.pages).length} icon={<FileIcon />} delay={0.15} glow="rgba(168,85,247,0.08)" />
+              <StatCard label="Pages Tracked" value={Object.keys(filterPages(data.pages)).length} icon={<FileIcon />} delay={0.15} glow="rgba(168,85,247,0.08)" />
             </div>
 
             {/* Globe */}
@@ -776,12 +784,12 @@ export default function AnalyticsDashboard() {
                 Top Pages
               </h3>
               <div className="space-y-3">
-                {sorted(data.pages).map(([path, count]) => (
+                {sorted(filterPages(data.pages)).map(([path, count]) => (
                   <Bar
                     key={path}
                     label={path}
                     value={count}
-                    max={sorted(data.pages)[0]?.[1] ?? 1}
+                    max={sorted(filterPages(data.pages))[0]?.[1] ?? 1}
                   />
                 ))}
               </div>
