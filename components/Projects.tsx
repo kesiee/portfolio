@@ -54,6 +54,7 @@ export default function Projects() {
                 backgroundColor: "var(--card)",
                 borderColor: "var(--border)",
               }}
+              onClick={() => window.open(project.link, "_blank", "noopener,noreferrer")}
             >
               {/* Top row: subtitle + metric */}
               <div className="flex items-start justify-between mb-4">
@@ -161,11 +162,12 @@ export default function Projects() {
                 initial={{ opacity: 0, x: -15 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.4, delay: 0.4 + i * 0.08 }}
-                className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-5 p-4 rounded-xl border transition-all duration-200 hover:border-amber-500/30"
+                className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-5 p-4 rounded-xl border transition-all duration-200 hover:border-amber-500/30 cursor-pointer"
                 style={{
                   backgroundColor: "var(--card)",
                   borderColor: "var(--border)",
                 }}
+                onClick={() => window.open(project.link, "_blank", "noopener,noreferrer")}
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1.5">

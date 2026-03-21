@@ -44,12 +44,13 @@ export default function Publications() {
               initial={{ opacity: 0, x: -20 }}
               animate={isInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.5, delay: i * 0.15 }}
-              className="flex gap-5 p-6 rounded-2xl border"
+              className="flex gap-5 p-6 rounded-2xl border cursor-pointer transition-all duration-200 hover:border-amber-500/30"
               style={{
                 backgroundColor: "var(--card)",
                 borderColor: "var(--border)",
                 borderLeft: "4px solid var(--amber)",
               }}
+              onClick={() => window.open(pub.doi, "_blank", "noopener,noreferrer")}
             >
               <div className="flex-1 space-y-3">
                 {/* Meta row */}
