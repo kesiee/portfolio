@@ -96,6 +96,46 @@ function LivePulse() {
   );
 }
 
+/* ---------- SVG icons for stat cards ---------- */
+function EyeIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
+function UserIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+}
+
+function GlobeIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="2" y1="12" x2="22" y2="12" />
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    </svg>
+  );
+}
+
+function FileIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="16" y1="13" x2="8" y2="13" />
+      <line x1="16" y1="17" x2="8" y2="17" />
+    </svg>
+  );
+}
+
 /* ---------- stat card with animated number + icon ---------- */
 function StatCard({
   label,
@@ -106,7 +146,7 @@ function StatCard({
 }: {
   label: string;
   value: number;
-  icon: string;
+  icon: React.ReactNode;
   delay: number;
   glow?: string;
 }) {
@@ -115,7 +155,7 @@ function StatCard({
       initial={{ opacity: 0, y: 20, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.5, delay }}
-      className="relative p-5 rounded-xl border overflow-hidden group"
+      className="relative p-5 rounded-xl border overflow-hidden group text-center"
       style={{ backgroundColor: "var(--card)", borderColor: "var(--border)" }}
     >
       {/* Subtle glow on hover */}
@@ -125,9 +165,9 @@ function StatCard({
           background: `radial-gradient(circle at 50% 50%, ${glow || "rgba(245,158,11,0.06)"}, transparent 70%)`,
         }}
       />
-      <div className="relative">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-2xl">{icon}</span>
+      <div className="relative flex flex-col items-center">
+        <div className="mb-2" style={{ color: "var(--amber)" }}>
+          {icon}
         </div>
         <div
           className="text-3xl font-extrabold mb-1 tabular-nums"
@@ -588,10 +628,10 @@ export default function AnalyticsDashboard() {
           <>
             {/* Stat cards */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
-              <StatCard label="Total Views" value={data.total} icon="👁" delay={0} glow="rgba(245,158,11,0.08)" />
-              <StatCard label="Unique Visitors" value={data.unique} icon="👤" delay={0.05} glow="rgba(45,212,191,0.08)" />
-              <StatCard label="Countries" value={Object.keys(data.countries).length} icon="🌍" delay={0.1} glow="rgba(59,130,246,0.08)" />
-              <StatCard label="Pages Tracked" value={Object.keys(data.pages).length} icon="📄" delay={0.15} glow="rgba(168,85,247,0.08)" />
+              <StatCard label="Total Views" value={data.total} icon={<EyeIcon />} delay={0} glow="rgba(245,158,11,0.08)" />
+              <StatCard label="Unique Visitors" value={data.unique} icon={<UserIcon />} delay={0.05} glow="rgba(45,212,191,0.08)" />
+              <StatCard label="Countries" value={Object.keys(data.countries).length} icon={<GlobeIcon />} delay={0.1} glow="rgba(59,130,246,0.08)" />
+              <StatCard label="Pages Tracked" value={Object.keys(data.pages).length} icon={<FileIcon />} delay={0.15} glow="rgba(168,85,247,0.08)" />
             </div>
 
             {/* Globe */}
