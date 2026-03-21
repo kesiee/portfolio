@@ -125,7 +125,7 @@ export default function Hero() {
               }}
             >
               <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
-              Available for OPT &middot; Data Scientist
+              Open for Work
             </span>
           </motion.div>
 

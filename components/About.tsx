@@ -37,115 +37,72 @@ export default function About() {
           </h2>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-          {/* Left: Stats */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            {/* Education cards */}
-            <div className="space-y-4">
-              {education.map((edu, i) => (
-                <motion.div
-                  key={edu.school}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
-                  className="p-4 rounded-xl border"
-                  style={{
-                    backgroundColor: "var(--card)",
-                    borderColor: "var(--border)",
-                  }}
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p
-                        className="text-sm font-semibold mb-1"
-                        style={{ color: "var(--text)" }}
-                      >
-                        {edu.degree}
-                      </p>
-                      <p className="text-xs" style={{ color: "var(--muted)" }}>
-                        {edu.school} &middot; {edu.period}
-                      </p>
-                    </div>
-                    {edu.gpa && (
-                      <span
-                        className="shrink-0 text-xs font-bold px-2 py-1 rounded"
-                        style={{
-                          backgroundColor: "rgba(245, 158, 11, 0.15)",
-                          color: "var(--amber)",
-                        }}
-                      >
-                        {edu.gpa}
-                      </span>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+        {/* Bio */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="max-w-3xl space-y-4 text-base leading-relaxed mb-12"
+          style={{ color: "var(--muted)" }}
+        >
+          <p>
+            Data Scientist and ML Engineer with 3+ years of experience in
+            time-series forecasting, clustering, anomaly detection, and scalable
+            data pipelines for smart-building and energy systems.
+          </p>
+          <p>
+            Led energy prediction research for 91 buildings at Fort Moore,
+            coordinating with academic and industry stakeholders (US Ignite).
+            First-author IEEE Access publication on ML-driven energy fault
+            detection. Experienced with Python, PySpark, XGBoost, Azure
+            Databricks, and AWS.
+          </p>
+          <p>
+            Currently exploring LLM and RAG architectures. STEM OPT authorized
+            through 02/2029.
+          </p>
+        </motion.div>
 
-          {/* Right: Bio + OPT badge */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-6"
-          >
-            {/* OPT badge */}
-            <div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
+        {/* Education */}
+        <div className="grid sm:grid-cols-2 gap-4 max-w-3xl">
+          {education.map((edu, i) => (
+            <motion.div
+              key={edu.school}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.4, delay: 0.4 + i * 0.1 }}
+              className="p-4 rounded-xl border"
               style={{
-                backgroundColor: "rgba(45, 212, 191, 0.1)",
-                border: "1px solid rgba(45, 212, 191, 0.25)",
-                color: "var(--teal)",
-                fontFamily: "var(--font-mono)",
+                backgroundColor: "var(--card)",
+                borderColor: "var(--border)",
               }}
             >
-              <span className="w-2 h-2 rounded-full bg-teal-400" />
-              OPT &middot; Work Authorized
-            </div>
-
-            <div className="space-y-4 text-base leading-relaxed" style={{ color: "var(--muted)" }}>
-              <p>
-                Data Scientist and ML Engineer with 3+ years of experience in
-                time-series forecasting, clustering, anomaly detection, and scalable
-                data pipelines for smart-building and energy systems.
-              </p>
-              <p>
-                Led energy prediction research for 91 buildings at Fort Moore,
-                coordinating with academic and industry stakeholders (US Ignite).
-                First-author IEEE Access publication on ML-driven energy fault
-                detection. Experienced with Python, PySpark, XGBoost, Azure
-                Databricks, and AWS.
-              </p>
-              <p>
-                Currently exploring LLM and RAG architectures. STEM OPT authorized
-                through 02/2029.
-              </p>
-            </div>
-
-            {/* Highlight row */}
-            <div className="flex flex-wrap gap-3 pt-2">
-              {["IEEE Published", "OPT Eligible", "4.0 GPA", "Open to Relocate"].map(
-                (tag) => (
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p
+                    className="text-sm font-semibold mb-1"
+                    style={{ color: "var(--text)" }}
+                  >
+                    {edu.degree}
+                  </p>
+                  <p className="text-xs" style={{ color: "var(--muted)" }}>
+                    {edu.school} &middot; {edu.period}
+                  </p>
+                </div>
+                {edu.gpa && (
                   <span
-                    key={tag}
-                    className="text-xs font-medium px-3 py-1 rounded-full border"
+                    className="shrink-0 text-xs font-bold px-2 py-1 rounded"
                     style={{
-                      borderColor: "var(--border)",
-                      color: "var(--text)",
-                      backgroundColor: "var(--card)",
+                      backgroundColor: "rgba(245, 158, 11, 0.15)",
+                      color: "var(--amber)",
                     }}
                   >
-                    {tag}
+                    {edu.gpa}
                   </span>
-                )
-              )}
-            </div>
-          </motion.div>
+                )}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
