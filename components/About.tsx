@@ -46,23 +46,28 @@ export default function About() {
           style={{ color: "var(--muted)", textAlign: "justify" }}
         >
           <p>
-            ML Engineer with 3+ years building end-to-end forecasting and
-            anomaly detection systems for real-world infrastructure. Background
-            in data engineering (Spark/AWS) evolved into full ML system
-            design — from ETL pipelines to model training, evaluation, and
-            deployment.
+            ML Engineer and Data Scientist with 2.7+ years building end-to-end
+            forecasting, anomaly-detection, and LLM systems for real-world
+            infrastructure. Background in data engineering (Spark / AWS / Azure
+            Databricks) evolved into full ML system design — from ETL pipelines
+            and clustering research to model training, evaluation, and
+            production deployment.
           </p>
           <p>
-            Developed an energy prediction system for 91 buildings at Fort
-            Moore (R&sup2; 0.82 &rarr; 0.98), delivered to US Ignite. Built
-            scalable pipelines on Azure Databricks processing 1.2M+
-            time-series records. First-author IEEE Access publication on
-            ML-driven energy fault detection.
+            Delivered an energy prediction system for 91 buildings at Fort
+            Moore (R&sup2; 0.82 &rarr; 0.98) to US Ignite, processed 1.2M+
+            time-series records on Azure Databricks, and proposed the Bollinger
+            Band fault-detection method that benchmarked at 97% accuracy on the
+            LEAD dataset. First author on IEEE Access 2026, co-author on IEEE
+            AIRC 2025.
           </p>
           <p>
-            Currently building llmgate (open-source LLM connector, 21
-            providers) and competing on Kaggle. STEM OPT authorized through
-            02/2029.
+            Now a Research Intern at Columbus State University extending the
+            GMM soft-clustering work on ASHRAE GEP-III (1,400 buildings, 2,374
+            meters) toward an AIRC follow-up — while shipping side: llmgate
+            (PyPI, 21 LLM providers), JobHunt (200K+ jobs live on Vercel), a
+            Resume Tailoring SaaS, and a controlled gated-Transformer FFN
+            research study. STEM OPT authorized through 02/2029.
           </p>
         </motion.div>
 
