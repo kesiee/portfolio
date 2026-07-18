@@ -50,7 +50,6 @@ export const factSheet: { k: string; v: string }[] = [
   { k: "Education", v: "M.S. Applied CS (Data Science) · 4.0 / 4.0 GPA" },
   { k: "Publications", v: "First-author IEEE Access 2026 · co-author AIRC 2025" },
   { k: "Location", v: "Alpharetta, GA · open to relocation" },
-  { k: "Work auth", v: "F-1 STEM OPT · through 02/2029 · no near-term sponsorship" },
 ];
 
 /* ── Skills: flat category → items, rendered as text rows (no pills) ── */

@@ -82,14 +82,6 @@ export default function Hero() {
             {personal.heroLine}
           </motion.p>
 
-          <motion.p
-            variants={item}
-            className="mt-3 text-sm max-w-[52ch]"
-            style={{ color: "var(--muted)", fontFamily: "var(--font-mono)" }}
-          >
-            {personal.workAuth}
-          </motion.p>
-
           {/* CTAs */}
           <motion.div variants={item} className="mt-9 flex flex-wrap items-center gap-3">
             <a
