@@ -1,32 +1,22 @@
 export default function Footer() {
+  const year = new Date().getFullYear();
   return (
-    <footer
-      className="py-8 border-t"
-      style={{
-        backgroundColor: "var(--surface)",
-        borderColor: "var(--border)",
-      }}
-    >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center gap-2">
-        <p
-          className="text-sm"
-          style={{ color: "var(--muted)", fontFamily: "var(--font-body)" }}
-        >
-          &copy; 2025 Shashank Kammanahalli
+    <footer className="py-10 border-t" style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p className="text-sm" style={{ color: "var(--muted)", fontFamily: "var(--font-mono)" }}>
+          © {year} Shashank Kammanahalli
         </p>
-        <p
-          className="text-xs"
-          style={{ color: "var(--muted)", fontFamily: "var(--font-mono)" }}
-        >
-          Vibe coded with Claude &#10022; Built with Next.js &amp; Tailwind &#10022;{" "}
+        <p className="text-xs flex items-center gap-3" style={{ color: "var(--faint)", fontFamily: "var(--font-mono)" }}>
+          <span>Built with Next.js &amp; Tailwind</span>
+          <span>·</span>
           <a
             href="https://github.com/kesiee/portfolio"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:underline transition-opacity hover:opacity-70"
-            style={{ color: "var(--muted)" }}
+            className="transition-colors duration-200 hover:text-[var(--accent)]"
+            style={{ color: "var(--faint)" }}
           >
-            View Source
+            Source
           </a>
         </p>
       </div>

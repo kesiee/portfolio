@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import { MotionConfig } from "framer-motion";
 
 type Theme = "dark" | "light";
 
@@ -12,15 +13,13 @@ const ThemeContext = createContext<{
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>("dark");
 
+  // Read the theme the pre-paint inline script already set, so the toggle
+  // icon matches first paint (no flash, no mismatch).
   useEffect(() => {
-    const stored = localStorage.getItem("theme") as Theme | null;
-    const preferred =
-      stored ||
-      (window.matchMedia("(prefers-color-scheme: light)").matches
-        ? "light"
-        : "dark");
-    setTheme(preferred);
-    document.documentElement.setAttribute("data-theme", preferred);
+    const current =
+      (document.documentElement.getAttribute("data-theme") as Theme | null) ||
+      "dark";
+    setTheme(current);
   }, []);
 
   const toggleTheme = () => {
@@ -32,7 +31,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
+      <MotionConfig reducedMotion="user">{children}</MotionConfig>
     </ThemeContext.Provider>
   );
 }

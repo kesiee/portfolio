@@ -1,111 +1,69 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
 import { publications } from "@/lib/data";
+import { Reveal, SectionHeader } from "@/components/primitives";
 
 export default function Publications() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-
   return (
-    <section
-      id="publications"
-      ref={ref}
-      className="py-24 sm:py-32"
-      style={{ backgroundColor: "var(--surface)" }}
-    >
+    <section id="publications" className="py-24 sm:py-32" style={{ backgroundColor: "var(--surface)" }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="mb-16"
-        >
-          <span
-            className="text-sm font-medium tracking-widest uppercase mb-3 block"
-            style={{ color: "var(--amber)", fontFamily: "var(--font-mono)" }}
-          >
-            Research
-          </span>
-          <h2
-            className="text-3xl sm:text-4xl font-bold"
-            style={{ fontFamily: "var(--font-display)", color: "var(--text)" }}
-          >
-            Publications
-          </h2>
-        </motion.div>
+        <SectionHeader index="05" label="Research" title="Peer-reviewed publications" />
 
-        <div className="space-y-6">
+        <div>
           {publications.map((pub, i) => (
-            <motion.article
-              key={pub.doi}
-              initial={{ opacity: 0, x: -20 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5, delay: i * 0.15 }}
-              className="flex gap-5 p-6 rounded-2xl border cursor-pointer transition-all duration-200 hover:border-amber-500/30"
-              style={{
-                backgroundColor: "var(--card)",
-                borderColor: "var(--border)",
-                borderLeft: "4px solid var(--amber)",
-              }}
-              onClick={() => window.open(pub.doi, "_blank", "noopener,noreferrer")}
-            >
-              <div className="flex-1 space-y-3">
-                {/* Meta row */}
-                <div className="flex flex-wrap items-center gap-2">
+            <Reveal key={pub.doi} delay={i}>
+              <a
+                href={pub.doi}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group grid md:grid-cols-12 gap-4 md:gap-8 py-8 border-b transition-colors duration-200"
+                style={{ borderColor: "var(--border)" }}
+              >
+                <div className="md:col-span-1">
                   <span
-                    className="text-xs font-bold px-2.5 py-1 rounded"
-                    style={{
-                      backgroundColor: "rgba(245, 158, 11, 0.12)",
-                      color: "var(--amber)",
-                      fontFamily: "var(--font-mono)",
-                    }}
+                    className="text-sm"
+                    style={{ color: "var(--faint)", fontFamily: "var(--font-mono)" }}
                   >
-                    {pub.journal} &middot; {pub.year}
-                  </span>
-                  <span
-                    className="text-xs font-medium px-2.5 py-1 rounded-full border"
-                    style={{
-                      borderColor: "rgba(45, 212, 191, 0.3)",
-                      color: "var(--teal)",
-                      backgroundColor: "rgba(45, 212, 191, 0.08)",
-                    }}
-                  >
-                    {pub.note}
+                    [{pub.index}]
                   </span>
                 </div>
-
-                {/* Title */}
-                <h3
-                  className="text-base font-semibold leading-relaxed"
-                  style={{ color: "var(--text)", textAlign: "justify" }}
-                >
-                  {pub.title}
-                </h3>
-
-                {/* DOI link */}
-                <a
-                  href={pub.doi}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold transition-opacity duration-200 hover:opacity-70"
-                  style={{ color: "var(--teal)" }}
-                >
-                  View Publication
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path
-                      d="M2 7h10M8 3l4 4-4 4"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </a>
-              </div>
-            </motion.article>
+                <div className="md:col-span-11">
+                  <h3
+                    className="text-base sm:text-lg leading-snug transition-colors duration-200 group-hover:text-[var(--accent)]"
+                    style={{ color: "var(--text)", fontWeight: 600 }}
+                  >
+                    {pub.title}
+                  </h3>
+                  <p className="mt-2 text-sm" style={{ color: "var(--muted)" }}>
+                    {pub.authors}
+                  </p>
+                  <div
+                    className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs"
+                    style={{ fontFamily: "var(--font-mono)" }}
+                  >
+                    <span style={{ color: "var(--text)" }}>
+                      {pub.journal} · {pub.year}
+                    </span>
+                    <span
+                      className="px-2 py-0.5 rounded"
+                      style={{
+                        color: pub.note === "First Author" ? "var(--accent)" : "var(--muted)",
+                        border: `1px solid ${pub.note === "First Author" ? "var(--accent)" : "var(--border)"}`,
+                      }}
+                    >
+                      {pub.note}
+                    </span>
+                    <span style={{ color: "var(--faint)" }}>doi:{pub.doiLabel}</span>
+                  </div>
+                  <p className="mt-3 text-sm" style={{ color: "var(--muted)" }}>
+                    <span style={{ color: "var(--faint)", fontFamily: "var(--font-mono)" }}>
+                      result ·{" "}
+                    </span>
+                    {pub.result}
+                  </p>
+                </div>
+              </a>
+            </Reveal>
           ))}
         </div>
       </div>

@@ -3,10 +3,13 @@ export const personal = {
   firstName: "Shashank",
   lastName: "Kammanahalli Chandra Sekhara",
   nickname: "Kesiee",
-  title: "ML Engineer & Data Scientist",
-  tagline:
-    "ML Engineer and Data Scientist with 2.7+ years building forecasting, anomaly-detection, and LLM systems end-to-end — from PySpark and Azure Databricks pipelines to fine-tuned audio models, gated-Transformer research, and production LLM tooling shipped on PyPI. First-author IEEE Access publication. STEM OPT authorized through 02/2029.",
+  title: "Data Scientist",
+  roleLine: "Data Scientist / ML Engineer",
+  // Proof-first hero line — one tight sentence, no six-identity soup.
+  heroLine:
+    "I build forecasting and anomaly-detection models that ship — and I publish what works.",
   location: "Alpharetta, GA · Open to relocation",
+  workAuth: "F-1 STEM OPT · authorized through 02/2029 · no near-term sponsorship",
   email: "shashankkesiee@gmail.com",
   phone: "+1 (470) 546-3083",
   github: "https://github.com/kesiee",
@@ -17,6 +20,40 @@ export const personal = {
   opt: true,
 };
 
+/* ── Hero metric strip — front-loads proof in the first viewport.
+   `target` numbers count up on load; `text` values render as-is. ── */
+export const heroMetrics: {
+  target?: number;
+  text?: string;
+  prefix?: string;
+  suffix?: string;
+  decimals?: number;
+  label: string;
+}[] = [
+  { target: 0.98, decimals: 2, label: "R² · 91-building energy forecast" },
+  { text: "~$600K", suffix: "/yr", label: "forecasted savings" },
+  { text: "1st", label: "author · IEEE Access 2026" },
+  { target: 0.9789, decimals: 4, label: "ROC-AUC · BirdCLEF+ audio ML" },
+  { target: 4.0, decimals: 1, label: "GPA · M.S. Data Science" },
+];
+
+/* ── About: paper-style lede + fact sheet ── */
+export const aboutLede =
+  "I'm a data scientist who ships forecasting and anomaly-detection models and publishes what works.";
+
+export const aboutBody =
+  "As a research assistant at Columbus State I lifted a 91-building energy-prediction model from R² 0.82 to 0.98 — roughly $600K a year in forecasted savings — and turned that work into a first-author IEEE Access 2026 paper. I care as much about what fails: my current research found a clustering approach that looked promising was actually net-harmful, so I replaced it with a simpler per-meter model that stays stable across time splits where the original collapsed. I bring the statistical rigor — controlled ablations, bootstrap confidence intervals, paired significance tests — that keeps model claims defensible in front of reviewers and stakeholders alike.";
+
+export const factSheet: { k: string; v: string }[] = [
+  { k: "Focus", v: "Time-series forecasting · anomaly detection · applied ML" },
+  { k: "Currently", v: "Research Intern · Columbus State University" },
+  { k: "Education", v: "M.S. Applied CS (Data Science) · 4.0 / 4.0 GPA" },
+  { k: "Publications", v: "First-author IEEE Access 2026 · co-author AIRC 2025" },
+  { k: "Location", v: "Alpharetta, GA · open to relocation" },
+  { k: "Work auth", v: "F-1 STEM OPT · through 02/2029 · no near-term sponsorship" },
+];
+
+/* ── Skills: flat category → items, rendered as text rows (no pills) ── */
 export const skills = [
   {
     category: "ML & Modeling",
@@ -47,6 +84,19 @@ export const skills = [
     ],
   },
   {
+    category: "Statistics & Evaluation",
+    items: [
+      "Hypothesis Testing",
+      "Paired Wilcoxon Tests",
+      "Bootstrap Confidence Intervals",
+      "Controlled Ablations",
+      "Isotonic Calibration",
+      "Cross-Validation",
+      "Leakage Auditing",
+      "Model Monitoring",
+    ],
+  },
+  {
     category: "Deep Learning & Research",
     items: [
       "Transformer Internals",
@@ -55,230 +105,222 @@ export const skills = [
       "Transfer Learning",
       "Test-Time Augmentation",
       "FLOPs Accounting",
-      "Controlled Ablations",
       "Audio ML",
     ],
   },
   {
-    category: "Data Engineering",
+    category: "Data Engineering & MLOps",
     items: [
       "PySpark",
       "Apache Spark",
-      "Delta Lake",
-      "Pandas",
-      "NumPy",
-      "GeoPandas",
-      "Schema Validation",
-      "Streaming Pipelines",
-      "Kafka",
-    ],
-  },
-  {
-    category: "MLOps & Cloud",
-    items: [
       "Azure Databricks",
       "MLflow",
       "AWS (S3, EMR, Lambda)",
-      "Oracle Cloud",
-      "Docker / Compose",
-      "FastAPI",
       "Airflow",
-      "Vercel",
-      "Supabase",
+      "Docker",
+      "Kafka",
+      "Delta Lake",
     ],
   },
   {
-    category: "LLM & RAG Tooling",
-    items: [
-      "OpenAI",
-      "Anthropic",
-      "Google Gemini",
-      "Groq",
-      "Mistral",
-      "Sentence Transformers",
-      "TF-IDF",
-      "Vector Search",
-      "RAG",
-    ],
-  },
-  {
-    category: "Web, Frontend & APIs",
-    items: [
-      "Next.js (App Router)",
-      "React 19 RSC",
-      "TypeScript",
-      "Tailwind CSS",
-      "Framer Motion",
-      "PostgreSQL",
-      "PgBouncer",
-      "SQLModel",
-      "Redis",
-    ],
-  },
-  {
-    category: "Programming & Tooling",
+    category: "Programming & Data",
     items: [
       "Python",
       "SQL",
       "Scala",
       "Java",
-      "LaTeX",
-      "Git / GitHub",
+      "Pandas",
+      "NumPy",
+      "PostgreSQL",
       "Power BI",
       "Streamlit",
-      "pytest",
     ],
   },
 ];
 
-/* ── Featured Projects (large cards at top) ── */
-export const impactProjects = [
+/* ── Featured work — result-led figure blocks. Metric leads, prose supports. ── */
+export type SparkVariant = "forecast" | "stability" | "roc" | "bars";
+
+export const impactProjects: {
+  fig: string;
+  title: string;
+  subtitle: string;
+  result: string;
+  resultLabel: string;
+  proves: string;
+  description: string;
+  tags: string[];
+  link: string;
+  linkLabel: string;
+  spark: SparkVariant;
+}[] = [
   {
-    title: "llmgate",
-    subtitle: "Open Source · Python Library",
+    fig: "Fig. 01",
+    title: "Smart-Building Energy Forecasting",
+    subtitle: "Columbus State · US Ignite / Fort Moore · Published",
+    result: "R² 0.82 → 0.98",
+    resultLabel: "91 buildings · ~$600K/yr forecasted savings",
+    proves: "Deployed, published forecasting with a hard business number.",
     description:
-      "Plug-and-play LLM connector library — single YAML config, 21 providers (OpenAI, Anthropic, Google, Mistral, Groq, Together, Fireworks, OpenRouter, Cohere, and more), and only two third-party deps (httpx + PyYAML). Ships at ~2 MB versus ~200 MB+ for LiteLLM, with retry-with-fallback chains, normalized streaming, and typed errors. Published to PyPI as `llmgt` (v0.2.0).",
-    tags: ["Python", "PyPI", "LLM", "httpx", "YAML", "Open Source"],
-    link: "https://github.com/kesiee/llmgate",
-    metric: { label: "Providers", value: "21" },
+      "Owned the full ML lifecycle for a 91-building energy portfolio: rolling Z-score outlier detection, STL imputation, correlation-driven feature pruning, and XGBoost forecasting (selected over Random Forest, LSTM, MSTL, and Prophet). Lifted overall R² from 0.82 to 0.98 (RMSE 12.16) and formalised it as a first-author IEEE Access 2026 paper.",
+    tags: ["XGBoost", "STL", "MLflow", "Azure Databricks", "IEEE Access"],
+    link: "https://doi.org/10.1109/ACCESS.2026.3671169",
+    linkLabel: "Read the paper",
+    spark: "forecast",
   },
   {
-    title: "JobHunt — Job Board Aggregator",
-    subtitle: "Production · Next.js 16 + Postgres",
+    fig: "Fig. 02",
+    title: "Cross-Split Stability Research",
+    subtitle: "Columbus State · ASHRAE GEP-III · In progress",
+    result: "0.738 stable · clustering → 0.002",
+    resultLabel: "per-meter features vs GMM soft-clustering",
+    proves: "I kill my own approach when the metrics say so.",
     description:
-      "Public job board aggregating 200,000+ open roles from 16,500+ companies across 8 ATS platforms (Greenhouse, Lever, SmartRecruiters, Workable, Rippling, Gem, Ashby, Workday). Next.js 16 App Router with React 19 Server Components, self-hosted Postgres + PgBouncer on Oracle Cloud, full-text search with category facets, per-job OG tags and an auto-built sitemap, and a custom Postgres-backed analytics pipeline behind a /admin dashboard.",
-    tags: ["Next.js 16", "React 19 RSC", "PostgreSQL", "Oracle Cloud", "Tailwind"],
-    link: "https://job-board-kesiee.vercel.app/",
-    metric: { label: "Jobs", value: "200K+" },
+      "Disciplined metric slicing surfaced a clean negative result — GMM soft-clustering lifted median per-meter R² but was net-harmful in aggregate. Replaced it with engineered per-meter state features that reach test R² 0.738 and hold 0.738 → 0.725 across time splits where the clustering pipeline collapses to 0.002. That cross-split stability is the headline claim of the follow-up paper.",
+    tags: ["scikit-learn", "tslearn", "Wilcoxon", "Bootstrap CI", "Ablations"],
+    link: "https://github.com/kesiee",
+    linkLabel: "Research thread",
+    spark: "stability",
   },
   {
-    title: "master-resume — Resume Tailoring SaaS",
-    subtitle: "In Progress · FastAPI + Next.js 14",
+    fig: "Fig. 03",
+    title: "BirdCLEF+ 2026",
+    subtitle: "Kaggle × Cornell Lab of Ornithology",
+    result: "ROC-AUC 0.9789",
+    resultLabel: "multi-label audio classification",
+    proves: "Deep-learning DS under real deployment constraints.",
     description:
-      "SaaS that turns one prose master resume into infinitely many job-tailored, ATS-friendly PDFs via LLM-driven extraction and LaTeX rendering. FastAPI + SQLModel against Supabase Postgres, hybrid JSONB + relational storage, computed completeness, Next.js 14 editor with debounced auto-save, swappable LLM boundary (Groq + Anthropic today). Phases 1–2 complete; tailoring and LaTeX renderer in flight.",
-    tags: ["FastAPI", "SQLModel", "Supabase", "Next.js 14", "LLM", "LaTeX"],
-    link: "https://github.com/kesiee/master-resume",
-    metric: { label: "Phase", value: "3 / 5" },
+      "Two-model ensemble for fine-grained, class-imbalanced soundscape classification: a frozen CNN14 (PANNs) embedding baseline and a headline EfficientNet-B0 fine-tuned on 128-mel log-spectrograms with Mixup, label smoothing, and 5-fold stratified CV. Best fold reached macro ROC-AUC 0.9789 at epoch 27, with CPU inference inside the 9-hour Kaggle budget.",
+    tags: ["PyTorch", "timm", "EfficientNet", "PANNs", "Mixup"],
+    link: "https://github.com/kesiee/kaggle-birdclef-2026",
+    linkLabel: "View repo",
+    spark: "roc",
   },
   {
-    title: "gpt-activationNN",
-    subtitle: "Self-directed Research · PyTorch",
+    fig: "Fig. 04",
+    title: "Store Sales Forecasting",
+    subtitle: "Kaggle · Corporación Favorita",
+    result: "RMSLE 2.13 → 0.56",
+    resultLabel: "thousands of (store, family) series",
+    proves: "Decomposition-first forecasting at series scale.",
     description:
-      "Empirical study replacing GELU inside Transformer FFNs. Trained 30M–58M-parameter NanoGPT decoders on TinyStories (164M tokens, 10K steps) under a compute-matched A/B protocol. The learned-activation hypothesis lost cleanly; a pivoted post-projection deep-gate sweep landed `gated_deep_silu` at 5.673 best val perplexity vs 5.740 for the size-matched GELU baseline — with a clean LayerNorm-hurts negative result reported alongside.",
-    tags: ["PyTorch", "Transformers", "Ablations", "Mixed Precision", "Research"],
-    link: "https://github.com/kesiee/gpt-activationNN",
-    metric: { label: "Models", value: "8 FFN" },
+      "Multi-series forecasting that scores seasonal strength per series (STL/MSTL) to gate model choice, engineers lag, rolling, oil-price, holiday, and calendar features on log1p(sales), and ensembles a per-family LightGBM, a global LightGBM, and an MSTL forecast. Best leaderboard RMSLE 0.56, down from a 2.13 baseline through feature engineering and disciplined cross-validation.",
+    tags: ["LightGBM", "STL / MSTL", "Prophet", "Feature Engineering"],
+    link: "https://www.kaggle.com/code/shashankkc/stl-forecasting",
+    linkLabel: "View notebook",
+    spark: "forecast",
   },
 ];
 
 /* ── Other Projects (filtered by dropdown) ── */
 export type ProjectCategory =
-  | "Production"
   | "ML Research"
   | "Kaggle"
-  | "Tools & Demos";
+  | "Data Engineering"
+  | "Tools & Apps";
 
 export const projectCategories: ProjectCategory[] = [
-  "Production",
   "ML Research",
   "Kaggle",
-  "Tools & Demos",
+  "Data Engineering",
+  "Tools & Apps",
 ];
 
 export const otherProjects: {
   title: string;
   category: ProjectCategory;
+  metric: string;
   description: string;
   tags: string[];
   link: string;
 }[] = [
   {
-    title: "apply — Job Application Automation",
-    category: "Production",
-    description:
-      "End-to-end job scraping and resume-matching pipeline. Monitors 175+ company career pages plus Adzuna/Jooble and scrapes Greenhouse, Lever, Ashby, Workday, SmartRecruiters with a Playwright fallback. Two-stage matcher (TF-IDF cosine + MiniLM embeddings) against a multi-profile resume bank, SQLite tracker, 7-sheet Excel exports, and a 4-tab Flask dashboard with auto-ghosting.",
-    tags: ["Python", "Flask", "Sentence Transformers", "Playwright", "SQLite"],
-    link: "https://github.com/kesiee/apply",
-  },
-  {
-    title: "trading-signal-system",
-    category: "Production",
-    description:
-      "Real-time crypto trading signal pipeline (in progress). Streaming-first architecture on Docker Compose — Confluent Kafka broker, Redis rolling buffer, and an async Binance futures WebSocket ingestor. Topics segmented per stage (raw_ticks → feature_vectors → trading_signals) with FastAPI serving and a LightGBM signal model wired in next.",
-    tags: ["Kafka", "Redis", "FastAPI", "LightGBM", "Docker"],
-    link: "https://github.com/kesiee/trading-signal-system",
-  },
-  {
-    title: "BirdCLEF+ 2026",
+    title: "gpt-activationNN — Transformer FFN activation study",
     category: "ML Research",
+    metric: "val ppl 5.673 vs 5.740 GELU",
     description:
-      "Kaggle x Cornell Lab of Ornithology multi-label fine-grained audio classification — 5-second windows of long-form soundscapes across birds, mammals, amphibians, and insects. Two-model ensemble: a frozen CNN14 (PANNs) embedding + Logistic Regression baseline and a timm EfficientNet-B0 fine-tuned on 128-mel log-spectrograms with Mixup, label smoothing, and TTA. Best fold macro ROC-AUC 0.9789 at epoch 27.",
-    tags: ["PyTorch", "timm", "EfficientNet", "Audio ML", "Mixup", "TTA"],
-    link: "https://github.com/kesiee/kaggle-birdclef-2026",
-  },
-  {
-    title: "Store Sales Forecasting",
-    category: "Kaggle",
-    description:
-      "Multi-series forecasting across thousands of (store, family) pairs for Corporación Favorita. Decomposition-first: per-series STL/MSTL with seasonal-strength gating, log1p targets, lag/rolling features, oil forward-fills, holiday flags, and a blend of per-family LightGBM + global LightGBM + MSTL forecasts. Best leaderboard RMSLE 0.56 (down from a 2.13 baseline).",
-    tags: ["LightGBM", "STL / MSTL", "Feature Engineering", "Python"],
-    link: "https://www.kaggle.com/code/shashankkc/stl-forecasting",
+      "Compute-matched A/B study replacing GELU inside Transformer FFNs. Trained 30M–58M-parameter NanoGPT decoders on TinyStories with explicit FLOPs and parameter accounting. The learned-activation hypothesis lost cleanly; a pivoted post-projection deep-gate sweep landed gated_deep_silu at 5.673 best val perplexity vs 5.740 for the size-matched GELU baseline — with a clean LayerNorm-hurts negative result reported alongside.",
+    tags: ["PyTorch", "Transformers", "Ablations", "FLOPs Accounting"],
+    link: "https://github.com/kesiee/gpt-activationNN",
   },
   {
     title: "March Machine Learning Mania 2026",
     category: "Kaggle",
+    metric: "Brier ~0.115 · isotonic-calibrated",
     description:
-      "NCAA Division I men's and women's bracket prediction — 132,133 matchups, Brier-score metric. Per-team dynamic Elo (K=20 regular, K=40 tournament, between-season regression to 1500), GMM soft-clusters over playing-style features, and a per-gender LightGBM matchup classifier over diff/abs/sum features + Massey ordinals. Blended 0.65 LGBM + 0.35 Elo, isotonic-calibrated against 2023–2025.",
-    tags: ["LightGBM", "Elo", "GMM", "Isotonic Calibration", "Brier"],
+      "NCAA bracket prediction (132,133 matchups, Brier-scored, so calibration matters as much as ranking). Elo-like dynamic ratings with between-season regression, a GMM over team-style features, and a LightGBM matchup classifier with leave-one-year-out CV, blended 0.65 LGB / 0.35 Elo and passed through an isotonic calibrator.",
+    tags: ["LightGBM", "Elo", "GMM", "Isotonic Calibration"],
     link: "https://github.com/kesiee/kaggle-march-madness-2026",
   },
   {
     title: "HEDGE Forecast",
     category: "Kaggle",
+    metric: "Spearman-rank objective",
     description:
-      "Hedge-fund-style multi-horizon forecasting where the metric is Spearman rank, not MSE. Group-aware ffill/bfill imputation, global QuantileTransformer features, per-horizon target scaling, Fourier time clocks at multiple periods, group-lag features, and a stack of per-(horizon × sub_category) LightGBM regressors inverted back through the per-horizon scaler at submission.",
-    tags: ["LightGBM", "QuantileTransformer", "Fourier Features", "Time Series"],
+      "Hedge-fund-style multi-horizon forecasting where the metric is Spearman rank, not MSE. Group-aware imputation, global QuantileTransformer features, per-horizon target scaling, Fourier time clocks, group-lag features, and a stack of per-(horizon × sub_category) LightGBM regressors inverted back through the per-horizon scaler at submission.",
+    tags: ["LightGBM", "QuantileTransformer", "Fourier Features"],
     link: "https://github.com/kesiee/kaggle-hedge-forecast",
   },
   {
-    title: "Universal Time-Series Anomaly Detection",
-    category: "Tools & Demos",
+    title: "Flight Analysis — Event-Driven Spark on AWS",
+    category: "Data Engineering",
+    metric: "130M+ records · transient EMR",
     description:
-      "Streamlit app packaging the Bollinger-band fault-detection method from my IEEE AIRC 2025 co-authored paper into a universal interface. Upload any time-series CSV, select timestamp/metric columns, tune window + std-multiplier, and review anomalies overlaid on the raw signal with a downloadable summary table — the detection function ships as a small reusable utility.",
+      "Event-driven Spark pipeline where an S3 upload triggered Lambda/boto3 to spin up transient EMR clusters processing 130M+ commercial flight records for delay and cancellation metrics, torn down via Terraform to keep cost proportional to work.",
+    tags: ["Scala", "Spark", "AWS EMR", "Lambda", "Terraform"],
+    link: "https://github.com/kesiee",
+  },
+  {
+    title: "llmgate — Multi-Provider LLM Connector",
+    category: "Data Engineering",
+    metric: "21 providers · ~2 MB vs 200 MB+",
+    description:
+      "Plug-and-play Python library calling 21 LLM providers through a single YAML config with only two third-party deps (httpx + PyYAML). Retry-with-fallback chains, normalized streaming, and typed errors. Published to PyPI as llmgt (v0.2.0).",
+    tags: ["Python", "PyPI", "httpx", "YAML", "Open Source"],
+    link: "https://github.com/kesiee/llmgate",
+  },
+  {
+    title: "JobHunt — Job Board Aggregator",
+    category: "Data Engineering",
+    metric: "200K+ jobs · 16.5K companies",
+    description:
+      "Public job board aggregating 200,000+ roles from 16,500+ companies across 8 ATS platforms into one fast search surface. Next.js 16 App Router with React 19 Server Components, self-hosted Postgres + PgBouncer on Oracle Cloud, full-text search, per-job OG tags, and a Postgres-backed analytics pipeline.",
+    tags: ["Next.js 16", "PostgreSQL", "Oracle Cloud", "PgBouncer"],
+    link: "https://job-board-kesiee.vercel.app/",
+  },
+  {
+    title: "Universal Time-Series Anomaly Detection",
+    category: "Tools & Apps",
+    metric: "Bollinger method from AIRC 2025",
+    description:
+      "Streamlit app packaging the Bollinger-band fault-detection method from my IEEE AIRC 2025 co-authored paper into a universal interface: upload any time-series CSV, tune window + std-multiplier, and review anomalies overlaid on the raw signal — the detection function ships as a small reusable utility.",
     tags: ["Streamlit", "Python", "Anomaly Detection"],
     link: "https://github.com/kesiee/streamlit-universal-timeseries-anomaly-detection",
   },
   {
-    title: "Crypto Live Dashboard",
-    category: "Tools & Demos",
+    title: "apply — Job Application Automation",
+    category: "Tools & Apps",
+    metric: "175+ career pages · 2-stage matcher",
     description:
-      "Real-time crypto dashboard streaming Binance WebSocket ticks with CoinGecko + CryptoCompare as layered fallbacks. Candlestick / line charts with overlaid EMA-9/21/50, configurable auto-refresh, exponential-backoff reconnects with REST gap backfill, and an incremental EMA pass that keeps Streamlit responsive under live workloads.",
-    tags: ["Streamlit", "WebSocket", "Binance", "Python"],
-    link: "https://github.com/kesiee/streamlit-crypto-live-dashboard",
-  },
-  {
-    title: "This Portfolio Site",
-    category: "Tools & Demos",
-    description:
-      "The site you're reading. Next.js 14 App Router + Tailwind v4 + Framer Motion, single typed content module, custom CSS-variable token system for dark/light themes (no UI kit), Formspree-backed contact form, and a /resume route that prints to PDF from a custom print stylesheet. Deployed on Vercel.",
-    tags: ["Next.js 14", "TypeScript", "Tailwind v4", "Framer Motion"],
-    link: "https://github.com/kesiee/portfolio",
+      "End-to-end job scraping and resume-matching pipeline. Monitors 175+ company career pages plus job-board APIs, scrapes five ATS platforms with a Playwright fallback, and scores postings with a two-stage TF-IDF + MiniLM matcher against a multi-profile resume bank.",
+    tags: ["Python", "Sentence Transformers", "Playwright", "SQLite"],
+    link: "https://github.com/kesiee/apply",
   },
 ];
 
 export const experience = [
   {
     role: "Research Intern",
-    focus: "Smart-Buildings Clustering Research · ASHRAE GEP-III",
+    focus: "Applied ML, Smart Buildings · ASHRAE GEP-III",
     company: "Columbus State University",
     location: "Columbus, GA",
     period: "Apr 2026 – Present",
+    metric: "test R² 0.738 · stable across time splits",
     bullets: [
-      "Continuing the smart-buildings energy-prediction research thread under Dr. Yesem Kurt Peker, with the ASHRAE GEP-III public dataset (1,400 buildings, 2,374 smart meters) as the working dataset.",
-      "Iterating on the GMM soft-clustering pipeline that previously dropped median CVRMSE from 18.78% to 18.45% and shifted ~60 meters out of the negative-R² bucket when 15-component cluster-membership vectors fed a global XGBoost model.",
-      "Testing whether engineered regime / state / load-shape features can match the GMM-driven gain directly — simpler pipeline, better interpretability.",
-      "Targeting a publishable contribution at the AIRC conference as the follow-up to the co-authored AIRC 2026 paper.",
-      "Stack: Python, Pandas, NumPy, scikit-learn, tslearn, XGBoost, MLflow, Streamlit, Matplotlib, Seaborn — running locally on a single workstation for fast iteration.",
+      "Continuing peer-reviewed energy-forecasting research one-on-one with Dr. Yesem Kurt Peker on the ASHRAE GEP-III public dataset (1,400 buildings, 2,377 building-meter series across electricity, chilled water, steam, and hot water) toward an AIRC follow-up publication.",
+      "Surfaced a clean negative result through disciplined metric slicing: GMM soft-clustering lifted median per-meter R² but was net-harmful to aggregate R² — then engineered per-meter state features (regime, Markov-transition, exponential-decay) that carry the gain with no clustering step at all.",
+      "Current leader reaches overall test R² 0.738 and median per-meter R² 0.763 on a pruned 42-feature set, holding 0.738 → 0.725 across time splits where the clustering pipeline collapses to 0.002 — that cross-split stability is the headline claim of the paper.",
+      "Own the full evaluation stack — paired Wilcoxon tests, bootstrap confidence intervals, controlled ablations, a five-check leakage audit, and MLflow run tracking — on a local Python / Pandas / scikit-learn / XGBoost / tslearn workstation.",
     ],
   },
   {
@@ -287,12 +329,11 @@ export const experience = [
     company: "Columbus State University",
     location: "Columbus, GA",
     period: "Jun 2024 – Dec 2025",
+    metric: "R² 0.82 → 0.98 · ~$600K/yr forecasted",
     bullets: [
-      "Led energy prediction for 91 Fort Moore buildings delivered to US Ignite — rolling Z-score outliers, STL imputation, correlation-driven feature pruning, and XGBoost forecasting; lifted portfolio R² from 0.82 to 0.98 (~19.5%) and projected ~$600K/yr in savings at full installation.",
-      "Built Azure Databricks ETL ingesting 3 heterogeneous sources (Azure Blob historical readings, OpenWeatherMap, SQL occupancy from anonymized mobile triangulation) into 1.2M+ time-series records, with weekly retraining auto-triggered on occupancy refresh.",
-      "Drove migration of the Pandas POC to PySpark and partitioned distributed workloads, scaling the pipeline from 91 → 300+ buildings.",
-      "First author on IEEE Access 2026 (DOI 10.1109/ACCESS.2026.3671169) and co-author on IEEE Xplore / AIRC 2025 (DOI 10.1109/AIRC64931.2025.11077504), where my proposed Bollinger Band method ran alongside RMSE thresholding (97% accuracy, 0.021 FPR) on the LEAD benchmark.",
-      "Ran a clustering research program on ASHRAE GEP-III: systematically tested DTW (tslearn), statistical, and seasonal-aware clustering; only 15-component GMM soft-clustering produced measurable downstream forecast gains.",
+      "Led energy prediction for 91 Fort Moore buildings delivered to US Ignite — rolling Z-score outliers, STL imputation, correlation-driven feature pruning, and XGBoost forecasting; lifted portfolio R² from 0.82 to 0.98 (RMSE 12.16) and projected ~$600K/yr in savings at full installation.",
+      "Built Azure Databricks ETL ingesting heterogeneous sources (historical readings, OpenWeatherMap, SQL occupancy) into 1.2M+ time-series records, with weekly retraining auto-triggered on occupancy refresh, then drove a PySpark migration scaling from 91 → 300+ buildings.",
+      "First author on IEEE Access 2026 (DOI 10.1109/ACCESS.2026.3671169) and co-author on IEEE AIRC 2025 (DOI 10.1109/AIRC64931.2025.11077504), where my proposed Bollinger Band method ran alongside RMSE thresholding (97% accuracy, 0.021 FPR) on the LEAD benchmark (1.48M readings).",
       "Side project: Student Dropout XGBoost classifier on CSU registration data — best accuracy (0.64) across 4 competing teams.",
     ],
   },
@@ -302,43 +343,50 @@ export const experience = [
     company: "Innova Solutions",
     location: "Chennai, India",
     period: "Jun 2022 – May 2023",
+    metric: "10+ pipelines · 2 days vs 6 weeks",
     bullets: [
-      "Shipped an automated PySpark/Scala schema validation framework across 10+ production healthcare pipelines in 2 days on a problem a senior engineer had spent 3 sprints (6 weeks) on — eliminated manual validation and the recurring class of downstream quality incidents.",
+      "Shipped an automated PySpark/Scala schema-validation framework across 10+ production healthcare pipelines in 2 days on a problem a senior engineer had spent 3 sprints (6 weeks) on — eliminated manual validation and a recurring class of downstream quality incidents.",
       "Built a reusable Jackson (Scala) + Python converter that auto-generates Spark-compatible JSON schemas from arbitrary XML pipeline definitions, including deeply nested healthcare structures, repeating elements, and namespace prefixes.",
-      "Owned end-to-end design of an event-driven Spark pipeline on AWS — S3 ObjectCreated → Lambda (boto3) → transient EMR cluster running a Scala Spark job over 130M+ commercial flight records, persisting aggregated outputs and tearing the cluster down to keep costs low.",
-      "Picked up Scala from a Python baseline by pair-programming with seniors and reading the codebase; ran code reviews, documented schema decisions, and became the team's go-to engineer for validation work.",
+      "Owned an event-driven Spark pipeline on AWS — S3 ObjectCreated → Lambda (boto3) → transient EMR cluster running a Scala Spark job over 130M+ commercial flight records, torn down to keep cost proportional to work.",
     ],
   },
 ];
 
 export const publications = [
   {
+    index: "01",
     title:
       "An Integrated Data Engineering and Machine Learning Framework for Energy Prediction and Fault Detection in Smart Buildings",
+    authors: "Shashank K. C. et al.",
     journal: "IEEE Access",
     year: "2026",
     note: "First Author",
+    result: "XGBoost R² = 0.98 across 91 buildings",
+    doiLabel: "10.1109/ACCESS.2026.3671169",
     doi: "https://doi.org/10.1109/ACCESS.2026.3671169",
   },
   {
-    title:
-      "A Practical Framework for Energy Fault Detection in Smart Buildings",
+    index: "02",
+    title: "A Practical Framework for Energy Fault Detection in Smart Buildings",
+    authors: "et al., incl. Shashank K. C.",
     journal: "IEEE Xplore / AIRC 2025",
     year: "2025",
     note: "Co-Author",
+    result: "RMSE thresholding — 97% acc, 0.021 FPR on LEAD",
+    doiLabel: "10.1109/AIRC64931.2025.11077504",
     doi: "https://doi.org/10.1109/AIRC64931.2025.11077504",
   },
 ];
 
 export const education = [
   {
-    degree: "Master of Science in Applied Computer Science (Data Science)",
+    degree: "M.S. Applied Computer Science (Data Science)",
     school: "Columbus State University",
     period: "Aug 2023 – Dec 2025",
     gpa: "4.0 / 4.0",
   },
   {
-    degree: "Bachelor of Engineering in Computer Science",
+    degree: "B.E. Computer Science",
     school: "Bangalore Institute of Technology",
     period: "Aug 2017 – Aug 2021",
     gpa: null,
