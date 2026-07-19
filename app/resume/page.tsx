@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function ResumePage() {
   return (
     <>
@@ -60,7 +62,7 @@ export default function ResumePage() {
 
       <div className="resume-page">
         <div className="resume-actions">
-          <a href="/" className="btn-back">← Portfolio</a>
+          <Link href="/" className="btn-back">← Portfolio</Link>
           <a href="/resume.pdf" download="Shashank_Kammanahalli_Resume.pdf" className="btn-download">
             Download PDF
           </a>

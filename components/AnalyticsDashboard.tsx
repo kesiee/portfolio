@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { computeGenderProbability, countryName } from "@/lib/analytics";
 import { useTheme } from "@/components/ThemeProvider";
@@ -387,31 +388,63 @@ function GenderWidget({ countries }: { countries: Record<string, number> }) {
 }
 
 /* ---------- floating particles ---------- */
+interface ParticleConfig {
+  width: number;
+  height: number;
+  color: string;
+  left: string;
+  top: string;
+  yAmplitude: number;
+  xAmplitude: number;
+  duration: number;
+  delay: number;
+}
+
+// Deterministic per-index pseudo-random so render stays pure and
+// server/client markup match (no hydration mismatch).
+function seeded(i: number, salt: number) {
+  const x = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453;
+  return x - Math.floor(x);
+}
+
+const PARTICLES: ParticleConfig[] = Array.from({ length: 20 }, (_, i) => ({
+  width: seeded(i, 1) * 4 + 2,
+  height: seeded(i, 2) * 4 + 2,
+  color: i % 2 === 0 ? "var(--amber)" : "var(--teal)",
+  left: `${seeded(i, 3) * 100}%`,
+  top: `${seeded(i, 4) * 100}%`,
+  yAmplitude: seeded(i, 5) * 80 + 40,
+  xAmplitude: (seeded(i, 6) - 0.5) * 60,
+  duration: seeded(i, 7) * 8 + 6,
+  delay: seeded(i, 8) * 4,
+}));
+
 function Particles() {
+
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {Array.from({ length: 20 }).map((_, i) => (
+      {PARTICLES.map((p, i) => (
         <motion.div
           key={i}
           className="absolute rounded-full"
           style={{
-            width: Math.random() * 4 + 2,
-            height: Math.random() * 4 + 2,
-            backgroundColor: i % 2 === 0 ? "var(--amber)" : "var(--teal)",
+            width: p.width,
+            height: p.height,
+            backgroundColor: p.color,
             opacity: 0.15,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
+            left: p.left,
+            top: p.top,
           }}
           animate={{
-            y: [0, -(Math.random() * 80 + 40), 0],
-            x: [0, (Math.random() - 0.5) * 60, 0],
+            y: [0, -p.yAmplitude, 0],
+            x: [0, p.xAmplitude, 0],
             opacity: [0.1, 0.25, 0.1],
           }}
           transition={{
-            duration: Math.random() * 8 + 6,
+            duration: p.duration,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: Math.random() * 4,
+            delay: p.delay,
           }}
         />
       ))}
@@ -572,13 +605,13 @@ export default function AnalyticsDashboard() {
           className="mb-10"
         >
           <div className="flex items-center justify-between mb-4">
-            <a
+            <Link
               href="/"
               className="text-sm inline-block transition-colors hover:text-amber-400"
               style={{ color: "var(--muted)", fontFamily: "var(--font-mono)" }}
             >
               &larr; Back to portfolio
-            </a>
+            </Link>
             <div className="flex items-center gap-3">
               <LivePulse />
               <button

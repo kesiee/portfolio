@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useSyncExternalStore } from "react";
 import { MotionConfig } from "framer-motion";
 
 type Theme = "dark" | "light";
@@ -10,21 +10,34 @@ const ThemeContext = createContext<{
   toggleTheme: () => void;
 }>({ theme: "dark", toggleTheme: () => {} });
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
+// The pre-paint inline script sets `data-theme` on <html> before hydration.
+// Subscribe to that attribute directly so the toggle icon matches first paint
+// (no flash, no mismatch) without a setState-in-effect sync.
+function subscribe(listener: () => void) {
+  const observer = new MutationObserver(listener);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+  return () => observer.disconnect();
+}
 
-  // Read the theme the pre-paint inline script already set, so the toggle
-  // icon matches first paint (no flash, no mismatch).
-  useEffect(() => {
-    const current =
-      (document.documentElement.getAttribute("data-theme") as Theme | null) ||
-      "dark";
-    setTheme(current);
-  }, []);
+function getSnapshot(): Theme {
+  return (
+    (document.documentElement.getAttribute("data-theme") as Theme | null) ||
+    "dark"
+  );
+}
+
+function getServerSnapshot(): Theme {
+  return "dark";
+}
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const toggleTheme = () => {
     const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
     localStorage.setItem("theme", next);
     document.documentElement.setAttribute("data-theme", next);
   };

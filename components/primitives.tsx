@@ -105,11 +105,7 @@ export function MetricCounter({
   const [val, setVal] = useState(0);
 
   useEffect(() => {
-    if (text !== undefined || target === undefined || !inView) return;
-    if (reduce) {
-      setVal(target);
-      return;
-    }
+    if (text !== undefined || target === undefined || !inView || reduce) return;
     const controls = animate(0, target, {
       duration: 0.9,
       ease: EASE,
@@ -118,7 +114,12 @@ export function MetricCounter({
     return () => controls.stop();
   }, [inView, target, text, reduce]);
 
-  const display = text !== undefined ? text : val.toFixed(decimals);
+  const display =
+    text !== undefined
+      ? text
+      : reduce && inView && target !== undefined
+        ? target.toFixed(decimals)
+        : val.toFixed(decimals);
   return (
     <span ref={ref} className={`tnum ${className ?? ""}`} style={style}>
       {prefix}

@@ -2,7 +2,7 @@ import { kv } from "@vercel/kv";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const response = NextResponse.next();
   const path = request.nextUrl.pathname;
 
